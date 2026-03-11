@@ -1,0 +1,57 @@
+[
+  { "id": "k_a", "script": "katakana", "char": "ア", "roman": "a", "korean": "아", "group": "basic", "row": "a", "example": "アイス", "exampleKorean": "아이스크림" },
+  { "id": "k_i", "script": "katakana", "char": "イ", "roman": "i", "korean": "이", "group": "basic", "row": "a", "example": "インク", "exampleKorean": "잉크" },
+  { "id": "k_u", "script": "katakana", "char": "ウ", "roman": "u", "korean": "우", "group": "basic", "row": "a", "example": "ウイルス", "exampleKorean": "바이러스" },
+  { "id": "k_e", "script": "katakana", "char": "エ", "roman": "e", "korean": "에", "group": "basic", "row": "a", "example": "エアコン", "exampleKorean": "에어컨" },
+  { "id": "k_o", "script": "katakana", "char": "オ", "roman": "o", "korean": "오", "group": "basic", "row": "a", "example": "オレンジ", "exampleKorean": "오렌지" },
+
+  { "id": "k_ka", "script": "katakana", "char": "カ", "roman": "ka", "korean": "카", "group": "basic", "row": "ka", "example": "カメラ", "exampleKorean": "카메라" },
+  { "id": "k_ki", "script": "katakana", "char": "キ", "roman": "ki", "korean": "키", "group": "basic", "row": "ka", "example": "キウイ", "exampleKorean": "키위" },
+  { "id": "k_ku", "script": "katakana", "char": "ク", "roman": "ku", "korean": "쿠", "group": "basic", "row": "ka", "example": "クリーム", "exampleKorean": "크림" },
+  { "id": "k_ke", "script": "katakana", "char": "ケ", "roman": "ke", "korean": "케", "group": "basic", "row": "ka", "example": "ケーキ", "exampleKorean": "케이크" },
+  { "id": "k_ko", "script": "katakana", "char": "コ", "roman": "ko", "korean": "코", "group": "basic", "row": "ka", "example": "コート", "exampleKorean": "코트" },
+
+  { "id": "k_sa", "script": "katakana", "char": "サ", "roman": "sa", "korean": "사", "group": "basic", "row": "sa", "example": "サラダ", "exampleKorean": "샐러드" },
+  { "id": "k_shi", "script": "katakana", "char": "シ", "roman": "shi", "korean": "시", "group": "basic", "row": "sa", "example": "シャツ", "exampleKorean": "셔츠" },
+  { "id": "k_su", "script": "katakana", "char": "ス", "roman": "su", "korean": "스", "group": "basic", "row": "sa", "example": "スポーツ", "exampleKorean": "스포츠" },
+  { "id": "k_se", "script": "katakana", "char": "セ", "roman": "se", "korean": "세", "group": "basic", "row": "sa", "example": "セーター", "exampleKorean": "스웨터" },
+  { "id": "k_so", "script": "katakana", "char": "ソ", "roman": "so", "korean": "소", "group": "basic", "row": "sa", "example": "ソファ", "exampleKorean": "소파" },
+
+  { "id": "k_ta", "script": "katakana", "char": "タ", "roman": "ta", "korean": "타", "group": "basic", "row": "ta", "example": "タクシー", "exampleKorean": "택시" },
+  { "id": "k_chi", "script": "katakana", "char": "チ", "roman": "chi", "korean": "치", "group": "basic", "row": "ta", "example": "チーズ", "exampleKorean": "치즈" },
+  { "id": "k_tsu", "script": "katakana", "char": "ツ", "roman": "tsu", "korean": "츠", "group": "basic", "row": "ta", "example": "ツアー", "exampleKorean": "투어" },
+  { "id": "k_te", "script": "katakana", "char": "テ", "roman": "te", "korean": "테", "group": "basic", "row": "ta", "example": "テレビ", "exampleKorean": "텔레비전" },
+  { "id": "k_to", "script": "katakana", "char": "ト", "roman": "to", "korean": "토", "group": "basic", "row": "ta", "example": "トマト", "exampleKorean": "토마토" },
+
+  { "id": "k_na", "script": "katakana", "char": "ナ", "roman": "na", "korean": "나", "group": "basic", "row": "na", "example": "ナイフ", "exampleKorean": "나이프" },
+  { "id": "k_ni", "script": "katakana", "char": "ニ", "roman": "ni", "korean": "니", "group": "basic", "row": "na", "example": "ニット", "exampleKorean": "니트" },
+  { "id": "k_nu", "script": "katakana", "char": "ヌ", "roman": "nu", "korean": "누", "group": "basic", "row": "na", "example": "ヌードル", "exampleKorean": "누들" },
+  { "id": "k_ne", "script": "katakana", "char": "ネ", "roman": "ne", "korean": "네", "group": "basic", "row": "na", "example": "ネクタイ", "exampleKorean": "넥타이" },
+  { "id": "k_no", "script": "katakana", "char": "ノ", "roman": "no", "korean": "노", "group": "basic", "row": "na", "example": "ノート", "exampleKorean": "노트" },
+
+  { "id": "k_ha", "script": "katakana", "char": "ハ", "roman": "ha", "korean": "하", "group": "basic", "row": "ha", "example": "ハンバーガー", "exampleKorean": "햄버거" },
+  { "id": "k_hi", "script": "katakana", "char": "ヒ", "roman": "hi", "korean": "히", "group": "basic", "row": "ha", "example": "ヒーター", "exampleKorean": "히터" },
+  { "id": "k_fu", "script": "katakana", "char": "フ", "roman": "fu", "korean": "후", "group": "basic", "row": "ha", "example": "フォーク", "exampleKorean": "포크" },
+  { "id": "k_he", "script": "katakana", "char": "ヘ", "roman": "he", "korean": "헤", "group": "basic", "row": "ha", "example": "ヘア", "exampleKorean": "헤어" },
+  { "id": "k_ho", "script": "katakana", "char": "ホ", "roman": "ho", "korean": "호", "group": "basic", "row": "ha", "example": "ホテル", "exampleKorean": "호텔" },
+
+  { "id": "k_ma", "script": "katakana", "char": "マ", "roman": "ma", "korean": "마", "group": "basic", "row": "ma", "example": "マスク", "exampleKorean": "마스크" },
+  { "id": "k_mi", "script": "katakana", "char": "ミ", "roman": "mi", "korean": "미", "group": "basic", "row": "ma", "example": "ミルク", "exampleKorean": "우유" },
+  { "id": "k_mu", "script": "katakana", "char": "ム", "roman": "mu", "korean": "무", "group": "basic", "row": "ma", "example": "ムード", "exampleKorean": "무드" },
+  { "id": "k_me", "script": "katakana", "char": "メ", "roman": "me", "korean": "메", "group": "basic", "row": "ma", "example": "メモ", "exampleKorean": "메모" },
+  { "id": "k_mo", "script": "katakana", "char": "モ", "roman": "mo", "korean": "모", "group": "basic", "row": "ma", "example": "モデル", "exampleKorean": "모델" },
+
+  { "id": "k_ya", "script": "katakana", "char": "ヤ", "roman": "ya", "korean": "야", "group": "basic", "row": "ya", "example": "ヤクルト", "exampleKorean": "야쿠르트" },
+  { "id": "k_yu", "script": "katakana", "char": "ユ", "roman": "yu", "korean": "유", "group": "basic", "row": "ya", "example": "ユニフォーム", "exampleKorean": "유니폼" },
+  { "id": "k_yo", "script": "katakana", "char": "ヨ", "roman": "yo", "korean": "요", "group": "basic", "row": "ya", "example": "ヨーグルト", "exampleKorean": "요구르트" },
+
+  { "id": "k_ra", "script": "katakana", "char": "ラ", "roman": "ra", "korean": "라", "group": "basic", "row": "ra", "example": "ラーメン", "exampleKorean": "라면" },
+  { "id": "k_ri", "script": "katakana", "char": "リ", "roman": "ri", "korean": "리", "group": "basic", "row": "ra", "example": "リボン", "exampleKorean": "리본" },
+  { "id": "k_ru", "script": "katakana", "char": "ル", "roman": "ru", "korean": "루", "group": "basic", "row": "ra", "example": "ルール", "exampleKorean": "룰" },
+  { "id": "k_re", "script": "katakana", "char": "レ", "roman": "re", "korean": "레", "group": "basic", "row": "ra", "example": "レストラン", "exampleKorean": "레스토랑" },
+  { "id": "k_ro", "script": "katakana", "char": "ロ", "roman": "ro", "korean": "로", "group": "basic", "row": "ra", "example": "ロボット", "exampleKorean": "로봇" },
+
+  { "id": "k_wa", "script": "katakana", "char": "ワ", "roman": "wa", "korean": "와", "group": "basic", "row": "wa", "example": "ワイン", "exampleKorean": "와인" },
+  { "id": "k_wo", "script": "katakana", "char": "ヲ", "roman": "wo", "korean": "오", "group": "basic", "row": "wa", "example": "ヲ", "exampleKorean": "거의 쓰이지 않음" },
+  { "id": "k_n", "script": "katakana", "char": "ン", "roman": "n", "korean": "응/ㄴ", "group": "basic", "row": "wa", "example": "パン", "exampleKorean": "빵" }
+]

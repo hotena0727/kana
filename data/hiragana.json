@@ -1,0 +1,57 @@
+[
+  { "id": "h_a", "script": "hiragana", "char": "あ", "roman": "a", "korean": "아", "group": "basic", "row": "a", "example": "あさ", "exampleKorean": "아침" },
+  { "id": "h_i", "script": "hiragana", "char": "い", "roman": "i", "korean": "이", "group": "basic", "row": "a", "example": "いぬ", "exampleKorean": "개" },
+  { "id": "h_u", "script": "hiragana", "char": "う", "roman": "u", "korean": "우", "group": "basic", "row": "a", "example": "うみ", "exampleKorean": "바다" },
+  { "id": "h_e", "script": "hiragana", "char": "え", "roman": "e", "korean": "에", "group": "basic", "row": "a", "example": "えき", "exampleKorean": "역" },
+  { "id": "h_o", "script": "hiragana", "char": "お", "roman": "o", "korean": "오", "group": "basic", "row": "a", "example": "おちゃ", "exampleKorean": "차" },
+
+  { "id": "h_ka", "script": "hiragana", "char": "か", "roman": "ka", "korean": "카", "group": "basic", "row": "ka", "example": "かさ", "exampleKorean": "우산" },
+  { "id": "h_ki", "script": "hiragana", "char": "き", "roman": "ki", "korean": "키", "group": "basic", "row": "ka", "example": "き", "exampleKorean": "나무" },
+  { "id": "h_ku", "script": "hiragana", "char": "く", "roman": "ku", "korean": "쿠", "group": "basic", "row": "ka", "example": "くち", "exampleKorean": "입" },
+  { "id": "h_ke", "script": "hiragana", "char": "け", "roman": "ke", "korean": "케", "group": "basic", "row": "ka", "example": "けむり", "exampleKorean": "연기" },
+  { "id": "h_ko", "script": "hiragana", "char": "こ", "roman": "ko", "korean": "코", "group": "basic", "row": "ka", "example": "こえ", "exampleKorean": "목소리" },
+
+  { "id": "h_sa", "script": "hiragana", "char": "さ", "roman": "sa", "korean": "사", "group": "basic", "row": "sa", "example": "さかな", "exampleKorean": "생선" },
+  { "id": "h_shi", "script": "hiragana", "char": "し", "roman": "shi", "korean": "시", "group": "basic", "row": "sa", "example": "しお", "exampleKorean": "소금" },
+  { "id": "h_su", "script": "hiragana", "char": "す", "roman": "su", "korean": "스", "group": "basic", "row": "sa", "example": "すし", "exampleKorean": "초밥" },
+  { "id": "h_se", "script": "hiragana", "char": "せ", "roman": "se", "korean": "세", "group": "basic", "row": "sa", "example": "せかい", "exampleKorean": "세계" },
+  { "id": "h_so", "script": "hiragana", "char": "そ", "roman": "so", "korean": "소", "group": "basic", "row": "sa", "example": "そら", "exampleKorean": "하늘" },
+
+  { "id": "h_ta", "script": "hiragana", "char": "た", "roman": "ta", "korean": "타", "group": "basic", "row": "ta", "example": "たまご", "exampleKorean": "달걀" },
+  { "id": "h_chi", "script": "hiragana", "char": "ち", "roman": "chi", "korean": "치", "group": "basic", "row": "ta", "example": "ちず", "exampleKorean": "지도" },
+  { "id": "h_tsu", "script": "hiragana", "char": "つ", "roman": "tsu", "korean": "츠", "group": "basic", "row": "ta", "example": "つき", "exampleKorean": "달" },
+  { "id": "h_te", "script": "hiragana", "char": "て", "roman": "te", "korean": "테", "group": "basic", "row": "ta", "example": "て", "exampleKorean": "손" },
+  { "id": "h_to", "script": "hiragana", "char": "と", "roman": "to", "korean": "토", "group": "basic", "row": "ta", "example": "とり", "exampleKorean": "새" },
+
+  { "id": "h_na", "script": "hiragana", "char": "な", "roman": "na", "korean": "나", "group": "basic", "row": "na", "example": "なつ", "exampleKorean": "여름" },
+  { "id": "h_ni", "script": "hiragana", "char": "に", "roman": "ni", "korean": "니", "group": "basic", "row": "na", "example": "にく", "exampleKorean": "고기" },
+  { "id": "h_nu", "script": "hiragana", "char": "ぬ", "roman": "nu", "korean": "누", "group": "basic", "row": "na", "example": "いぬ", "exampleKorean": "개" },
+  { "id": "h_ne", "script": "hiragana", "char": "ね", "roman": "ne", "korean": "네", "group": "basic", "row": "na", "example": "ねこ", "exampleKorean": "고양이" },
+  { "id": "h_no", "script": "hiragana", "char": "の", "roman": "no", "korean": "노", "group": "basic", "row": "na", "example": "のみもの", "exampleKorean": "음료" },
+
+  { "id": "h_ha", "script": "hiragana", "char": "は", "roman": "ha", "korean": "하", "group": "basic", "row": "ha", "example": "はな", "exampleKorean": "꽃" },
+  { "id": "h_hi", "script": "hiragana", "char": "ひ", "roman": "hi", "korean": "히", "group": "basic", "row": "ha", "example": "ひと", "exampleKorean": "사람" },
+  { "id": "h_fu", "script": "hiragana", "char": "ふ", "roman": "fu", "korean": "후", "group": "basic", "row": "ha", "example": "ふね", "exampleKorean": "배" },
+  { "id": "h_he", "script": "hiragana", "char": "へ", "roman": "he", "korean": "헤", "group": "basic", "row": "ha", "example": "へや", "exampleKorean": "방" },
+  { "id": "h_ho", "script": "hiragana", "char": "ほ", "roman": "ho", "korean": "호", "group": "basic", "row": "ha", "example": "ほし", "exampleKorean": "별" },
+
+  { "id": "h_ma", "script": "hiragana", "char": "ま", "roman": "ma", "korean": "마", "group": "basic", "row": "ma", "example": "まど", "exampleKorean": "창문" },
+  { "id": "h_mi", "script": "hiragana", "char": "み", "roman": "mi", "korean": "미", "group": "basic", "row": "ma", "example": "みず", "exampleKorean": "물" },
+  { "id": "h_mu", "script": "hiragana", "char": "む", "roman": "mu", "korean": "무", "group": "basic", "row": "ma", "example": "むし", "exampleKorean": "벌레" },
+  { "id": "h_me", "script": "hiragana", "char": "め", "roman": "me", "korean": "메", "group": "basic", "row": "ma", "example": "め", "exampleKorean": "눈" },
+  { "id": "h_mo", "script": "hiragana", "char": "も", "roman": "mo", "korean": "모", "group": "basic", "row": "ma", "example": "もも", "exampleKorean": "복숭아" },
+
+  { "id": "h_ya", "script": "hiragana", "char": "や", "roman": "ya", "korean": "야", "group": "basic", "row": "ya", "example": "やま", "exampleKorean": "산" },
+  { "id": "h_yu", "script": "hiragana", "char": "ゆ", "roman": "yu", "korean": "유", "group": "basic", "row": "ya", "example": "ゆき", "exampleKorean": "눈" },
+  { "id": "h_yo", "script": "hiragana", "char": "よ", "roman": "yo", "korean": "요", "group": "basic", "row": "ya", "example": "よる", "exampleKorean": "밤" },
+
+  { "id": "h_ra", "script": "hiragana", "char": "ら", "roman": "ra", "korean": "라", "group": "basic", "row": "ra", "example": "らいねん", "exampleKorean": "내년" },
+  { "id": "h_ri", "script": "hiragana", "char": "り", "roman": "ri", "korean": "리", "group": "basic", "row": "ra", "example": "りんご", "exampleKorean": "사과" },
+  { "id": "h_ru", "script": "hiragana", "char": "る", "roman": "ru", "korean": "루", "group": "basic", "row": "ra", "example": "るす", "exampleKorean": "부재중" },
+  { "id": "h_re", "script": "hiragana", "char": "れ", "roman": "re", "korean": "레", "group": "basic", "row": "ra", "example": "れいぞうこ", "exampleKorean": "냉장고" },
+  { "id": "h_ro", "script": "hiragana", "char": "ろ", "roman": "ro", "korean": "로", "group": "basic", "row": "ra", "example": "ろうか", "exampleKorean": "복도" },
+
+  { "id": "h_wa", "script": "hiragana", "char": "わ", "roman": "wa", "korean": "와", "group": "basic", "row": "wa", "example": "わたし", "exampleKorean": "나" },
+  { "id": "h_wo", "script": "hiragana", "char": "を", "roman": "wo", "korean": "오", "group": "basic", "row": "wa", "example": "ほんをよむ", "exampleKorean": "책을 읽다" },
+  { "id": "h_n", "script": "hiragana", "char": "ん", "roman": "n", "korean": "응/ㄴ", "group": "basic", "row": "wa", "example": "ほん", "exampleKorean": "책" }
+]
