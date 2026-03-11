@@ -1,4 +1,4 @@
-export const SFX_BASE_URL = "https://hotena.com/hotena/n3/mp3";
+export const SFX_BASE_URL = "https://hotena.com/hotena/app/mp3/sfx";
 
 export function playSfx(fileName: string, volume = 0.8) {
   if (typeof window === "undefined") return;
