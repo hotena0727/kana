@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import BottomNav from "@/components/BottomNav";
 import katakanaData from "@/data/katakana.json";
@@ -36,6 +36,7 @@ export default function KatakanaPage() {
   const [selectedId, setSelectedId] = useState<string>(katakanaList[0]?.id ?? "");
   const [isAutoPlaying, setIsAutoPlaying] = useState(false);
   const [autoPlayMs, setAutoPlayMs] = useState(2000);
+  const detailRef = useRef<HTMLDivElement | null>(null);
 
   const selectedIndex = useMemo(() => {
     const foundIndex = katakanaList.findIndex((item) => item.id === selectedId);
@@ -46,16 +47,27 @@ export default function KatakanaPage() {
     return katakanaList[selectedIndex] ?? katakanaList[0];
   }, [selectedIndex]);
 
+  const scrollToDetail = () => {
+    window.setTimeout(() => {
+      detailRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 50);
+  };
+
   const handlePrev = () => {
     const prevIndex =
       selectedIndex === 0 ? katakanaList.length - 1 : selectedIndex - 1;
     setSelectedId(katakanaList[prevIndex].id);
+    scrollToDetail();
   };
 
   const handleNext = () => {
     const nextIndex =
       selectedIndex === katakanaList.length - 1 ? 0 : selectedIndex + 1;
     setSelectedId(katakanaList[nextIndex].id);
+    scrollToDetail();
   };
 
   const handleRandom = () => {
@@ -66,6 +78,7 @@ export default function KatakanaPage() {
       randomIndex = Math.floor(Math.random() * katakanaList.length);
     }
     setSelectedId(katakanaList[randomIndex].id);
+    scrollToDetail();
   };
 
   const handleToggleAuto = () => {
@@ -135,7 +148,10 @@ export default function KatakanaPage() {
                 <button
                   key={item.id}
                   type="button"
-                  onClick={() => setSelectedId(item.id)}
+                  onClick={() => {
+                    setSelectedId(item.id);
+                    scrollToDetail();
+                  }}
                   className={[
                     "rounded-2xl p-3 text-center ring-1 transition",
                     isSelected
@@ -159,7 +175,10 @@ export default function KatakanaPage() {
         </div>
 
         {selectedItem && (
-          <div className="mt-5 rounded-[28px] bg-white p-5 shadow-[0_14px_36px_rgba(15,23,42,0.07)] ring-1 ring-slate-100">
+          <div
+            ref={detailRef}
+            className="mt-5 rounded-[28px] bg-white p-5 shadow-[0_14px_36px_rgba(15,23,42,0.07)] ring-1 ring-slate-100"
+          >
             <div className="flex items-center justify-between">
               <div className="text-sm font-semibold text-sky-700">선택한 문자</div>
               <div className="text-xs text-slate-500">
