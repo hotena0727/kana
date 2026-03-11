@@ -11,6 +11,45 @@ type HomeStats = {
   todayCorrect: number;
 };
 
+const learningSteps = [
+  {
+    id: "step_1",
+    badge: "1단계",
+    title: "문자 익히기",
+    description: "히라가나와 가타카나를 눌러 보며 기본 발음과 예시 단어를 익혀보세요.",
+    href: "/letters",
+    cta: "문자 학습 시작",
+    icon: "あ",
+  },
+  {
+    id: "step_2",
+    badge: "2단계",
+    title: "발음 규칙 익히기",
+    description: "촉음, 장음처럼 헷갈리기 쉬운 규칙을 카드와 예시로 익혀보세요.",
+    href: "/rules",
+    cta: "규칙 학습 가기",
+    icon: "っ",
+  },
+  {
+    id: "step_3",
+    badge: "3단계",
+    title: "퀴즈로 확인하기",
+    description: "기본 / 확장 / 전체 범위를 골라 지금 배운 내용을 바로 문제로 확인해 보세요.",
+    href: "/quiz",
+    cta: "퀴즈 풀기",
+    icon: "✍️",
+  },
+  {
+    id: "step_4",
+    badge: "4단계",
+    title: "틀린 것 다시 보기",
+    description: "틀린 문자만 다시 복습하면서 약한 부분을 줄여보세요.",
+    href: "/review",
+    cta: "오답 복습 가기",
+    icon: "🔁",
+  },
+];
+
 export default function HomePage() {
   const [stats, setStats] = useState<HomeStats>({
     streakDays: 0,
@@ -45,7 +84,7 @@ export default function HomePage() {
 
           <p className="mt-3 text-[15px] leading-7 text-slate-600">
             히라가나와 가타카나를 부담 없이 익히고,
-            오늘의 10문제로 바로 복습해 보세요.
+            발음 규칙과 퀴즈로 자연스럽게 반복해 보세요.
           </p>
 
           <Link
@@ -82,6 +121,47 @@ export default function HomePage() {
           </div>
         </div>
 
+        <div className="mb-5 rounded-[28px] bg-white p-5 shadow-[0_14px_36px_rgba(15,23,42,0.07)] ring-1 ring-slate-100">
+          <div className="text-sm font-semibold text-sky-700">추천 학습 코스</div>
+          <div className="mt-2 text-lg font-bold text-slate-900">
+            문자 → 규칙 → 퀴즈 → 복습
+          </div>
+          <p className="mt-2 text-sm leading-6 text-slate-600">
+            처음이라면 아래 순서대로 따라가면 가장 자연스럽게 익힐 수 있습니다.
+          </p>
+
+          <div className="mt-4 grid gap-3">
+            {learningSteps.map((step) => (
+              <Link
+                key={step.id}
+                href={step.href}
+                className="rounded-2xl bg-sky-50/70 p-4 ring-1 ring-sky-100 transition hover:bg-sky-50"
+              >
+                <div className="flex items-start gap-3">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white text-lg font-bold text-slate-900 ring-1 ring-sky-100">
+                    {step.icon}
+                  </div>
+
+                  <div className="min-w-0">
+                    <div className="inline-flex rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-sky-700 ring-1 ring-sky-100">
+                      {step.badge}
+                    </div>
+                    <div className="mt-2 text-base font-bold text-slate-900">
+                      {step.title}
+                    </div>
+                    <p className="mt-1 text-sm leading-6 text-slate-600">
+                      {step.description}
+                    </p>
+                    <div className="mt-2 text-sm font-semibold text-sky-700">
+                      {step.cta} →
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+
         <div className="grid gap-4">
           <Link
             href="/letters"
@@ -95,13 +175,24 @@ export default function HomePage() {
           </Link>
 
           <Link
+            href="/rules"
+            className="rounded-[28px] bg-white p-5 shadow-[0_14px_36px_rgba(15,23,42,0.07)] ring-1 ring-slate-100 transition hover:-translate-y-0.5"
+          >
+            <div className="text-sm font-semibold text-sky-700">발음 규칙</div>
+            <div className="mt-1 text-xl font-bold">촉음 · 장음 규칙 익히기</div>
+            <p className="mt-2 text-sm leading-6 text-slate-600">
+              っ / ッ, ー 같은 규칙을 카드와 예시 단어로 익혀보세요.
+            </p>
+          </Link>
+
+          <Link
             href="/quiz"
             className="rounded-[28px] bg-white p-5 shadow-[0_14px_36px_rgba(15,23,42,0.07)] ring-1 ring-slate-100 transition hover:-translate-y-0.5"
           >
             <div className="text-sm font-semibold text-sky-700">퀴즈</div>
             <div className="mt-1 text-xl font-bold">랜덤 10문제로 복습하기</div>
             <p className="mt-2 text-sm leading-6 text-slate-600">
-              문자를 보고 발음을 고르거나, 발음을 보고 문자를 고르는 문제를 풀어보세요.
+              문자 퀴즈와 발음 규칙 퀴즈로 지금 배운 내용을 바로 확인해 보세요.
             </p>
           </Link>
 

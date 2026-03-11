@@ -17,7 +17,10 @@ export default async function ResultPage({ searchParams }: ResultPageProps) {
   const rawMode = params.mode ?? "mixed";
 
   const mode: QuizMode =
-    rawMode === "hiragana" || rawMode === "katakana" || rawMode === "mixed"
+    rawMode === "hiragana" ||
+    rawMode === "katakana" ||
+    rawMode === "mixed" ||
+    rawMode === "rules"
       ? rawMode
       : "mixed";
 
