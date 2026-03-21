@@ -191,6 +191,8 @@ export default function HomePage() {
           </div>
         </div>
 
+        <HomeCenterPromoCard />
+        
         <div className="grid gap-4">
           <Link
             href="/letters"
