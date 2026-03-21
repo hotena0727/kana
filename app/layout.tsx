@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import FloatingConsultButton from "@/components/FloatingConsultButton";
 
 export const metadata: Metadata = {
   title: "하테나일본어 문자와 발음",
@@ -29,7 +30,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body>
+        {children}
+        <FloatingConsultButton />
+      </body>
     </html>
   );
 }
