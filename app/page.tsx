@@ -47,7 +47,7 @@ const learningSteps = [
     id: "step_3",
     badge: "3단계",
     title: "퀴즈로 확인하기",
-    description: "기본 / 확장 / 전체 범위를 골라 지금 배운 내용을 바로 문제로 확인해 보세요.",
+    description: "기본, 확장, 전체 범위를 골라 지금 배운 내용을 바로 문제로 확인해 보세요.",
     href: "/quiz",
     cta: "퀴즈 풀기",
     icon: "✍️",
@@ -114,7 +114,7 @@ function getInstallPromptCopy(
 ): InstallCopy {
   const suffix =
     step === 3
-      ? "처음 한 번만 해두면 다음부터 정말 편합니다."
+      ? "처음 한 번만 해두면 다음부터 훨씬 편하게 들어올 수 있어요."
       : step === 7
       ? "이미 설치하셨다면 닫으셔도 괜찮습니다."
       : "이번이 마지막 안내입니다. 원치 않으시면 다시 보지 않기를 눌러 주세요.";
@@ -137,7 +137,7 @@ function getInstallPromptCopy(
     return {
       badge: step === 10 ? "마지막 안내" : "삼성 인터넷 추천",
       title: "갤럭시에서는\n삼성 인터넷으로 설치가 편해요.",
-      desc: "삼성 인터넷은 PWA를 자주 방문하면 주소창의 ‘+’ 아이콘이나 홈화면 추가 배너를 보여줄 수 있습니다.",
+      desc: "삼성 인터넷은 자주 방문한 앱에서 주소창의 ‘+’ 아이콘이나 홈화면 추가 안내를 보여줄 수 있어요.",
       steps: [
         "삼성 인터넷으로 이 페이지를 여세요.",
         "주소창 근처의 ‘+’ 아이콘이 보이면 눌러 주세요.",
@@ -165,11 +165,11 @@ function getInstallPromptCopy(
     return {
       badge: step === 10 ? "마지막 안내" : "Chrome 설치 안내",
       title: "안드로이드 Chrome에서도\n간단히 추가할 수 있어요.",
-      desc: "Chrome에서는 메뉴의 ‘홈 화면에 추가’ 또는 ‘Create shortcut’로 진행하면 됩니다.",
+      desc: "Chrome에서는 메뉴의 ‘홈 화면에 추가’ 또는 비슷한 설치 항목으로 진행하면 됩니다.",
       steps: [
         "Chrome으로 이 페이지를 여세요.",
         "오른쪽 위 ‘⋮’ 메뉴를 누르세요.",
-        "‘홈 화면에 추가’ 또는 ‘Create shortcut’을 눌러 추가하세요.",
+        "‘홈 화면에 추가’ 또는 설치 관련 항목을 눌러 추가하세요.",
       ],
       note: suffix,
     };
@@ -331,16 +331,17 @@ export default function HomePage() {
 
           <div className="mt-5 grid grid-cols-2 gap-3">
             <Link
-              href="/quiz"
+              href="/letters"
               className="flex items-center justify-center rounded-2xl bg-sky-500 px-4 py-3.5 text-base font-bold text-white transition hover:bg-sky-600"
             >
-              오늘의 10문제 시작
+              문자 학습 시작
             </Link>
+
             <Link
-              href="/letters"
+              href="/quiz"
               className="flex items-center justify-center rounded-2xl bg-white px-4 py-3.5 text-base font-bold text-sky-700 ring-1 ring-sky-100 transition hover:bg-sky-50"
             >
-              문자표 보기
+              오늘의 10문제
             </Link>
           </div>
         </div>
@@ -348,100 +349,110 @@ export default function HomePage() {
         <div className="mb-5 grid grid-cols-3 gap-3">
           <div className="rounded-2xl bg-white p-4 text-center shadow-[0_12px_30px_rgba(15,23,42,0.06)] ring-1 ring-slate-100">
             <div className="text-[11px] font-semibold text-sky-700">연속 학습</div>
-            <div className="mt-2 text-2xl font-extrabold text-slate-900">{stats.streakDays}</div>
+            <div className="mt-2 text-2xl font-extrabold text-slate-900">
+              {stats.streakDays}
+            </div>
             <div className="mt-1 text-[11px] text-slate-500">일</div>
           </div>
 
           <div className="rounded-2xl bg-white p-4 text-center shadow-[0_12px_30px_rgba(15,23,42,0.06)] ring-1 ring-slate-100">
             <div className="text-[11px] font-semibold text-sky-700">오늘 푼 문제</div>
-            <div className="mt-2 text-2xl font-extrabold text-slate-900">{stats.todaySolved}</div>
+            <div className="mt-2 text-2xl font-extrabold text-slate-900">
+              {stats.todaySolved}
+            </div>
             <div className="mt-1 text-[11px] text-slate-500">문제</div>
           </div>
 
           <div className="rounded-2xl bg-white p-4 text-center shadow-[0_12px_30px_rgba(15,23,42,0.06)] ring-1 ring-slate-100">
             <div className="text-[11px] font-semibold text-sky-700">오늘 정답</div>
-            <div className="mt-2 text-2xl font-extrabold text-slate-900">{stats.todayCorrect}</div>
+            <div className="mt-2 text-2xl font-extrabold text-slate-900">
+              {stats.todayCorrect}
+            </div>
             <div className="mt-1 text-[11px] text-slate-500">개</div>
           </div>
         </div>
 
-        <div className="mb-5 rounded-[28px] bg-white p-5 shadow-[0_14px_36px_rgba(15,23,42,0.07)] ring-1 ring-slate-100">
-          <div className="text-sm font-semibold text-sky-700">추천 학습 코스</div>
-          <div className="mt-2 text-lg font-bold text-slate-900">문자 → 규칙 → 퀴즈 → 복습</div>
-          <p className="mt-2 text-sm leading-6 text-slate-600">
-            처음이라면 아래 순서대로 따라가면 가장 자연스럽게 익힐 수 있습니다.
-          </p>
+        <div className="rounded-[30px] bg-white p-5 shadow-[0_16px_40px_rgba(15,23,42,0.08)] ring-1 ring-slate-100">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <div className="text-sm font-semibold text-sky-700">추천 학습 코스</div>
+              <div className="mt-2 text-xl font-bold text-slate-900">
+                문자 → 규칙 → 퀴즈 → 복습
+              </div>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                처음이라면 아래 순서대로 따라가면 가장 자연스럽게 익힐 수 있습니다.
+              </p>
+            </div>
 
-          <div className="mt-4 grid gap-3">
-            {learningSteps.map((step) => (
-              <Link
-                key={step.id}
-                href={step.href}
-                className="rounded-2xl bg-sky-50/70 p-4 ring-1 ring-sky-100 transition hover:bg-sky-50"
-              >
-                <div className="flex items-start gap-3">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white text-lg font-bold text-slate-900 ring-1 ring-sky-100">
-                    {step.icon}
-                  </div>
-
-                  <div className="min-w-0">
-                    <div className="inline-flex rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-sky-700 ring-1 ring-sky-100">
-                      {step.badge}
-                    </div>
-                    <div className="mt-2 text-base font-bold text-slate-900">{step.title}</div>
-                    <p className="mt-1 text-sm leading-6 text-slate-600">{step.description}</p>
-                    <div className="mt-2 text-sm font-semibold text-sky-700">{step.cta} →</div>
-                  </div>
-                </div>
-              </Link>
-            ))}
+            <div className="shrink-0 rounded-2xl bg-sky-50 px-3 py-2 text-xs font-semibold text-sky-700 ring-1 ring-sky-100">
+              처음 시작용
+            </div>
           </div>
-        </div>
 
-        <div className="grid gap-4">
-          <Link
-            href="/letters"
-            className="rounded-[28px] bg-white p-5 shadow-[0_14px_36px_rgba(15,23,42,0.07)] ring-1 ring-slate-100 transition hover:-translate-y-0.5"
-          >
-            <div className="text-sm font-semibold text-sky-700">문자 학습</div>
-            <div className="mt-1 text-xl font-bold">히라가나 · 가타카나 익히기</div>
-            <p className="mt-2 text-sm leading-6 text-slate-600">
-              문자를 하나씩 눌러 보면서 발음과 예시 단어를 익혀보세요.
-            </p>
-          </Link>
+          <div className="mt-5 grid gap-3">
+            {learningSteps.map((step, index) => {
+              const isFirst = index === 0;
 
-          <Link
-            href="/rules"
-            className="rounded-[28px] bg-white p-5 shadow-[0_14px_36px_rgba(15,23,42,0.07)] ring-1 ring-slate-100 transition hover:-translate-y-0.5"
-          >
-            <div className="text-sm font-semibold text-sky-700">발음 규칙</div>
-            <div className="mt-1 text-xl font-bold">촉음 · 장음 규칙 익히기</div>
-            <p className="mt-2 text-sm leading-6 text-slate-600">
-              っ / ッ, ー 같은 규칙을 카드와 예시 단어로 익혀보세요.
-            </p>
-          </Link>
+              return (
+                <Link
+                  key={step.id}
+                  href={step.href}
+                  className={[
+                    "group rounded-[24px] p-4 transition",
+                    isFirst
+                      ? "bg-[linear-gradient(180deg,#eff8ff_0%,#f8fbff_100%)] ring-2 ring-sky-200 shadow-[0_14px_32px_rgba(56,189,248,0.10)]"
+                      : "bg-sky-50/70 ring-1 ring-sky-100 hover:bg-sky-50",
+                  ].join(" ")}
+                >
+                  <div className="flex items-start gap-3">
+                    <div
+                      className={[
+                        "flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-lg font-bold text-slate-900",
+                        isFirst ? "bg-white ring-2 ring-sky-100" : "bg-white ring-1 ring-sky-100",
+                      ].join(" ")}
+                    >
+                      {step.icon}
+                    </div>
 
-          <Link
-            href="/quiz"
-            className="rounded-[28px] bg-white p-5 shadow-[0_14px_36px_rgba(15,23,42,0.07)] ring-1 ring-slate-100 transition hover:-translate-y-0.5"
-          >
-            <div className="text-sm font-semibold text-sky-700">퀴즈</div>
-            <div className="mt-1 text-xl font-bold">랜덤 10문제로 복습하기</div>
-            <p className="mt-2 text-sm leading-6 text-slate-600">
-              문자 퀴즈와 발음 규칙 퀴즈로 지금 배운 내용을 바로 확인해 보세요.
-            </p>
-          </Link>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <div className="inline-flex rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-sky-700 ring-1 ring-sky-100">
+                          {step.badge}
+                        </div>
 
-          <Link
-            href="/review"
-            className="rounded-[28px] bg-white p-5 shadow-[0_14px_36px_rgba(15,23,42,0.07)] ring-1 ring-slate-100 transition hover:-translate-y-0.5"
-          >
-            <div className="text-sm font-semibold text-sky-700">복습</div>
-            <div className="mt-1 text-xl font-bold">틀린 문자 다시 보기</div>
-            <p className="mt-2 text-sm leading-6 text-slate-600">
-              틀린 문자만 모아서 다시 맞혀 보며 약한 부분을 줄여보세요.
-            </p>
-          </Link>
+                        {isFirst && (
+                          <div className="inline-flex rounded-full bg-sky-500 px-2.5 py-1 text-[11px] font-semibold text-white">
+                            여기서 시작
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="mt-2 text-base font-bold text-slate-900">
+                        {step.title}
+                      </div>
+
+                      <p className="mt-1 text-sm leading-6 text-slate-600">
+                        {step.description}
+                      </p>
+
+                      <div className="mt-3 flex items-center justify-between">
+                        <div className="text-sm font-semibold text-sky-700">
+                          {step.cta}
+                        </div>
+                        <div className="text-sky-400 transition group-hover:translate-x-0.5">
+                          →
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+
+          <div className="mt-5 rounded-2xl bg-slate-50 px-4 py-3 text-sm leading-6 text-slate-600 ring-1 ring-slate-200">
+            처음에는 순서대로 가볍게 보시고, 익숙해지면 필요한 단계만 골라서 반복해도 좋습니다.
+          </div>
         </div>
       </section>
 
