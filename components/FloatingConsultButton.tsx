@@ -138,6 +138,9 @@ export default function FloatingConsultButton() {
                     e.currentTarget.style.backgroundColor = "#006241";
                   }}
                 >
+                  style={{
+                    color: "#ffffff",                    
+                  }}
                   네이버톡으로 수강상담
                 </a>
               </div>
