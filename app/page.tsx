@@ -11,6 +11,34 @@ type HomeStats = {
   todayCorrect: number;
 };
 
+function HomeCenterPromoCard() {
+  return (
+    <div className="mt-5 rounded-[28px] bg-gradient-to-br from-sky-50 to-white p-5 shadow-[0_14px_36px_rgba(15,23,42,0.06)] ring-1 ring-sky-100">
+      <div className="text-sm font-semibold text-sky-700">
+        하테나 교육센터
+      </div>
+
+      <div className="mt-2 text-xl font-bold tracking-tight text-slate-900">
+        다음 단계 학습이 궁금하신가요?
+      </div>
+
+      <p className="mt-2 text-sm leading-6 text-slate-600">
+        20년 넘게 일본어를 가르쳐 온 경험을 바탕으로,
+        입문자도 부담 없이 다음 단계로 이어갈 수 있는 학습 과정을 안내해드려요.
+      </p>
+
+      <a
+        href="https://hotena.com/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-4 inline-flex w-full items-center justify-center rounded-2xl bg-white px-4 py-3.5 text-base font-bold text-sky-700 ring-1 ring-sky-200 transition hover:bg-sky-50"
+      >
+        교육센터 보기
+      </a>
+    </div>
+  );
+}
+
 const learningSteps = [
   {
     id: "step_1",
@@ -123,6 +151,7 @@ export default function HomePage() {
 
         <div className="mb-5 rounded-[28px] bg-white p-5 shadow-[0_14px_36px_rgba(15,23,42,0.07)] ring-1 ring-slate-100">
           <div className="text-sm font-semibold text-sky-700">추천 학습 코스</div>
+
           <div className="mt-2 text-lg font-bold text-slate-900">
             문자 → 규칙 → 퀴즈 → 복습
           </div>
