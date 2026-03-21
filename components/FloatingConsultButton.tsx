@@ -51,13 +51,20 @@ export default function FloatingConsultButton() {
         aria-label="수강상담 안내 열기"
         className={[
           "fixed right-4 z-[60] inline-flex items-center gap-2",
-          "rounded-full bg-sky-500 px-4 py-3 text-sm font-extrabold text-white",
-          "shadow-[0_14px_34px_rgba(14,165,233,0.34)] ring-1 ring-sky-400/40",
-          "transition hover:-translate-y-0.5 hover:bg-sky-600 active:translate-y-0",
-          "sm:right-6",
+          "rounded-full px-4 py-3 text-sm font-extrabold text-white",
+          "shadow-[0_14px_34px_rgba(0,98,65,0.28)] ring-1 transition",
+          "hover:-translate-y-0.5 active:translate-y-0 sm:right-6",
         ].join(" ")}
         style={{
           bottom: "calc(env(safe-area-inset-bottom, 0px) + 88px)",
+          backgroundColor: "#006241",
+          borderColor: "rgba(0,98,65,0.18)",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.backgroundColor = "#004f34";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.backgroundColor = "#006241";
         }}
       >
         <span className="text-base leading-none">💬</span>
@@ -77,8 +84,11 @@ export default function FloatingConsultButton() {
             <div className="rounded-[32px] bg-white p-6 shadow-[0_24px_70px_rgba(15,23,42,0.22)] ring-1 ring-slate-200">
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <div className="text-sm font-semibold text-sky-700">
-                    하테나 교육센터
+                  <div
+                    className="text-sm font-semibold"
+                    style={{ color: "#006241" }}
+                  >
+                    하테나일본어 교육센터
                   </div>
                   <div className="mt-2 text-2xl font-extrabold tracking-tight text-slate-900">
                     다음 단계 학습이 궁금하신가요?
@@ -106,7 +116,11 @@ export default function FloatingConsultButton() {
                   href="https://hotena.com/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex w-full items-center justify-center rounded-2xl bg-white px-4 py-3.5 text-base font-bold text-sky-700 ring-1 ring-sky-200 transition hover:bg-sky-50"
+                  className="inline-flex w-full items-center justify-center rounded-2xl bg-white px-4 py-3.5 text-base font-bold transition"
+                  style={{
+                    color: "#006241",
+                    border: "1px solid #cfe3d8",
+                  }}
                 >
                   교육센터 보기
                 </a>
@@ -115,7 +129,14 @@ export default function FloatingConsultButton() {
                   href="http://talk.naver.com/W45141"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex w-full items-center justify-center rounded-2xl bg-sky-500 px-4 py-3.5 text-base font-bold text-white transition hover:bg-sky-600"
+                  className="inline-flex w-full items-center justify-center rounded-2xl px-4 py-3.5 text-base font-bold text-white transition"
+                  style={{ backgroundColor: "#006241" }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = "#004f34";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "#006241";
+                  }}
                 >
                   네이버톡으로 수강상담
                 </a>
