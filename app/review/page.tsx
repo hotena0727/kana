@@ -11,6 +11,28 @@ import {
 import { createReviewQuizByIds, type QuizQuestion } from "@/lib/quiz";
 import { playSfx } from "@/lib/sfx";
 
+type ChoiceLike =
+  | string
+  | {
+    value?: string;
+    label?: string;
+    text?: string;
+    reading?: string;
+    answer?: string;
+  };
+
+function getChoiceValue(choice: ChoiceLike): string {
+  if (typeof choice === "string") return choice;
+  return (
+    choice.value ??
+    choice.label ??
+    choice.text ??
+    choice.reading ??
+    choice.answer ??
+    ""
+  );
+}
+
 function ReviewCenterPromoCard() {
   return (
     <div className="mt-5 rounded-[28px] bg-gradient-to-br from-sky-50 to-white p-5 shadow-[0_14px_36px_rgba(15,23,42,0.06)] ring-1 ring-sky-100">
@@ -341,29 +363,31 @@ export default function ReviewPage() {
             </p>
 
             <div className="mt-6 grid gap-3">
-              {currentQuestion.choices.map((choice) => {
+              {currentQuestion.choices.map((choice, index) => {
+                const choiceValue = getChoiceValue(choice as ChoiceLike);
+
                 const activeClass = !isChecked
-                  ? isSelectedChoice(choice)
+                  ? isSelectedChoice(choiceValue)
                     ? "border-sky-500 bg-sky-50 text-sky-700"
                     : "border-slate-200 bg-white text-slate-800 hover:border-sky-300 hover:bg-sky-50/50"
-                  : isCorrectChoice(choice)
+                  : isCorrectChoice(choiceValue)
                     ? "border-emerald-500 bg-emerald-50 text-emerald-700"
-                    : isSelectedChoice(choice)
+                    : isSelectedChoice(choiceValue)
                       ? "border-rose-500 bg-rose-50 text-rose-700"
                       : "border-slate-200 bg-slate-50 text-slate-400";
 
                 return (
                   <button
-                    key={choice}
+                    key={`${choiceValue}-${index}`}
                     type="button"
-                    onClick={() => handleChoiceClick(choice)}
+                    onClick={() => handleChoiceClick(choiceValue)}
                     disabled={isChecked}
                     className={[
                       "rounded-2xl border px-4 py-4 text-base font-bold transition",
                       activeClass,
                     ].join(" ")}
                   >
-                    {choice}
+                    {choiceValue}
                   </button>
                 );
               })}
