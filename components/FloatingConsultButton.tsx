@@ -129,8 +129,12 @@ export default function FloatingConsultButton() {
                                     href="http://talk.naver.com/W45141"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex w-full items-center justify-center rounded-2xl px-4 py-3.5 text-base font-bold text-white transition"
-                                    style={{ backgroundColor: "#006241" }}
+                                    className="inline-flex w-full items-center justify-center rounded-2xl px-4 py-3.5 text-base font-bold transition"
+                                    style={{
+                                        backgroundColor: "#006241",
+                                        color: "#ffffff",
+                                        WebkitTextFillColor: "#ffffff",
+                                    }}
                                 >
                                     네이버톡으로 수강상담
                                 </a>
