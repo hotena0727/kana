@@ -6,8 +6,9 @@ import { usePathname } from "next/navigation";
 const navItems = [
   { href: "/", label: "홈", icon: "🏠" },
   { href: "/letters", label: "문자", icon: "あ" },
-  { href: "/quiz", label: "퀴즈", icon: "✍️" },
   { href: "/rules", label: "규칙", icon: "っ" },
+  { href: "/write", label: "쓰기", icon: "✍️" },
+  { href: "/quiz", label: "퀴즈", icon: "📋" },
   { href: "/review", label: "복습", icon: "🔁" },
 ];
 
@@ -16,7 +17,7 @@ export default function BottomNav() {
 
   return (
     <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-slate-200 bg-white/95 backdrop-blur">
-      <div className="mx-auto grid w-full max-w-md grid-cols-5 px-2 py-1">
+      <div className="mx-auto grid w-full max-w-md grid-cols-6 px-2 py-1">
         {navItems.map((item) => {
           const isActive =
             item.href === "/"
