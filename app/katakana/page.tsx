@@ -9,6 +9,15 @@ import type { KanaItem } from "@/lib/types";
 const katakanaList = katakanaData as KanaItem[];
 const SPEED_OPTIONS = [2000, 3000, 5000];
 
+function getKanaCharClass(char: string) {
+  const isCombinedKana = (char || "").length >= 2;
+
+  return [
+    "font-bold leading-none whitespace-nowrap tracking-tight",
+    isCombinedKana ? "text-[18px]" : "text-2xl",
+  ].join(" ");
+}
+
 function speakJapanese(text: string) {
   if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
   if (!text) return;
@@ -153,13 +162,13 @@ export default function KatakanaPage() {
                     scrollToDetail();
                   }}
                   className={[
-                    "rounded-2xl p-3 text-center ring-1 transition",
+                    "rounded-2xl px-2 py-3 text-center ring-1 transition",
                     isSelected
                       ? "bg-sky-500 text-white ring-sky-500 shadow-md"
                       : "bg-sky-50 text-slate-900 ring-sky-100 hover:bg-sky-100",
                   ].join(" ")}
                 >
-                  <div className="text-2xl font-bold">{item.char}</div>
+                  <div className={getKanaCharClass(item.char)}>{item.char}</div>
                   <div
                     className={[
                       "mt-1 text-xs font-medium",
