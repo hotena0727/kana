@@ -136,7 +136,7 @@ export default function FloatingConsultButton() {
                                         WebkitTextFillColor: "#ffffff",
                                     }}
                                 >
-                                    네이버톡으로 수강상담
+                                    1:1 톡톡 상담
                                 </a>
                             </div>
                         </div>
