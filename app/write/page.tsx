@@ -39,10 +39,6 @@ const katakanaList = (katakanaData as KanaItem[]).map((item) => ({
 
 const allKanaList: StudyItem[] = [...hiraganaList, ...katakanaList];
 
-function isCombinedKana(char: string) {
-  return Array.from(char || "").length >= 2;
-}
-
 function splitKanaString(char: string) {
   return Array.from(char || "");
 }
