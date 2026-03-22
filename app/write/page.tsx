@@ -304,7 +304,7 @@ export default function WritePage() {
     isDrawingRef.current = false;
     try {
       canvas.releasePointerCapture(event.pointerId);
-    } catch {}
+    } catch { }
   };
 
   const handleClearCanvas = () => {
