@@ -6,6 +6,13 @@ import BottomNav from "@/components/BottomNav";
 import hiraganaData from "@/data/hiragana.json";
 import katakanaData from "@/data/katakana.json";
 import type { KanaItem } from "@/lib/types";
+import {
+  getGhostGlyphs,
+  getHint,
+  getStrokeGuide,
+  isCombinedKana,
+  type StrokeGuide,
+} from "@/lib/write-kana-guides";
 
 type WriteMode = "basic" | "combined" | "all";
 
@@ -256,7 +263,7 @@ export default function WritePage() {
       ctx.restore();
     });
   };
-  
+
   const drawGuide = () => {
     const canvas = canvasRef.current;
     if (!canvas || !currentItem) return;
