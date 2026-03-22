@@ -11,7 +11,7 @@ export type StrokeGuide = {
 export type GhostGlyph = {
   char: string;
   x: number;
-  y: number;
+  y: number; // baseline 기준
   size: number;
 };
 
@@ -53,7 +53,7 @@ export function getGhostGlyphs(text: string): GhostGlyph[] {
       {
         char: chars[0] || "",
         x: 150,
-        y: 168,
+        y: 214,
         size: 148,
       },
     ];
@@ -63,14 +63,14 @@ export function getGhostGlyphs(text: string): GhostGlyph[] {
     {
       char: chars[0],
       x: 118,
-      y: 186,
-      size: 132,
+      y: 214,
+      size: 138,
     },
     {
       char: chars[1],
-      x: 206,
-      y: 184,
-      size: 104,
+      x: 212,
+      y: 198,
+      size: 96,
     },
   ];
 }
