@@ -151,22 +151,21 @@ export default function WritePage() {
     height: number,
     text: string
   ) => {
-    const glyphs = getGhostGlyphs(text);
+    const x = width / 2;
+    const y = height * 0.72;
 
-    glyphs.forEach((glyph) => {
-      const x = scaleValue(glyph.x, width, 300);
-      const y = scaleValue(glyph.y, height, 300);
-      const size = scaleValue(glyph.size, width, 300);
+    const size = width * 0.42;
 
-      ctx.save();
-      ctx.globalAlpha = 0.12;
-      ctx.fillStyle = "#64748b";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "alphabetic";
-      ctx.font = `700 ${size}px "Noto Sans JP", "Hiragino Sans", sans-serif`;
-      ctx.fillText(glyph.char, x, y);
-      ctx.restore();
-    });
+    ctx.save();
+    ctx.globalAlpha = 0.12;
+    ctx.fillStyle = "#64748b";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "alphabetic";
+    ctx.font = `700 ${size}px "Noto Sans JP", "Hiragino Sans", sans-serif`;
+
+    ctx.fillText(text, x, y); // 🔥 핵심: 전체 문자열
+
+    ctx.restore();
   };
 
   const drawStrokeMarks = (
