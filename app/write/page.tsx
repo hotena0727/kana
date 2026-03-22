@@ -9,9 +9,7 @@ import type { KanaItem } from "@/lib/types";
 import {
   getGhostGlyphs,
   getHint,
-  getStrokeGuide,
   isCombinedKana,
-  type StrokeGuide,
 } from "@/lib/write-kana-guides";
 
 type WriteMode = "basic" | "combined" | "all";
@@ -169,28 +167,6 @@ export default function WritePage() {
     });
   };
 
-  const drawStrokeMarks = (
-    ctx: CanvasRenderingContext2D,
-    width: number,
-    height: number,
-    guide: StrokeGuide | null
-  ) => {
-    if (!guide?.marks?.length) return;
-
-    guide.marks.forEach((mark) => {
-      const x = scaleValue(mark.x, width, 300);
-      const y = scaleValue(mark.y, height, 300);
-
-      ctx.save();
-      ctx.fillStyle = "#2563eb";
-      ctx.font = `700 ${scaleValue(18, width, 300)}px sans-serif`;
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText(mark.label, x, y);
-      ctx.restore();
-    });
-  };
-
   const drawGuide = () => {
     const canvas = canvasRef.current;
     if (!canvas || !currentItem) return;
@@ -214,9 +190,6 @@ export default function WritePage() {
     if (showGhost) {
       drawGhostChar(ctx, width, height, currentItem.char);
     }
-
-    const guide = getStrokeGuide(currentItem.char);
-    drawStrokeMarks(ctx, width, height, guide);
 
     ctx.strokeStyle = "#111827";
     ctx.lineWidth = 7;
@@ -304,7 +277,7 @@ export default function WritePage() {
     isDrawingRef.current = false;
     try {
       canvas.releasePointerCapture(event.pointerId);
-    } catch { }
+    } catch {}
   };
 
   const handleClearCanvas = () => {

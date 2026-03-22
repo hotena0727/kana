@@ -1,13 +1,3 @@
-export type StrokeMark = {
-  x: number;
-  y: number;
-  label: string;
-};
-
-export type StrokeGuide = {
-  marks: StrokeMark[];
-};
-
 export type GhostGlyph = {
   char: string;
   x: number;
@@ -221,45 +211,4 @@ export function getGhostGlyphs(text: string): GhostGlyph[] {
       size: small.size,
     },
   ];
-}
-
-export function getStrokeGuide(text: string): StrokeGuide | null {
-  const guides: Record<string, StrokeGuide> = {
-    あ: {
-      marks: [
-        { x: 90, y: 96, label: "①" },
-        { x: 118, y: 138, label: "②" },
-        { x: 214, y: 222, label: "③" },
-      ],
-    },
-    い: {
-      marks: [
-        { x: 108, y: 118, label: "①" },
-        { x: 204, y: 206, label: "②" },
-      ],
-    },
-    う: {
-      marks: [
-        { x: 142, y: 84, label: "①" },
-        { x: 204, y: 198, label: "②" },
-      ],
-    },
-    え: {
-      marks: [
-        { x: 134, y: 86, label: "①" },
-        { x: 104, y: 140, label: "②" },
-        { x: 204, y: 220, label: "③" },
-      ],
-    },
-    お: {
-      marks: [
-        { x: 90, y: 100, label: "①" },
-        { x: 116, y: 140, label: "②" },
-        { x: 220, y: 106, label: "③" },
-        { x: 218, y: 220, label: "④" },
-      ],
-    },
-  };
-
-  return guides[text] || null;
 }
