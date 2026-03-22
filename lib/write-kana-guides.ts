@@ -53,7 +53,7 @@ export function getGhostGlyphs(text: string): GhostGlyph[] {
       {
         char: chars[0] || "",
         x: 150,
-        y: 150,
+        y: 168,
         size: 148,
       },
     ];
@@ -62,15 +62,15 @@ export function getGhostGlyphs(text: string): GhostGlyph[] {
   return [
     {
       char: chars[0],
-      x: 120,
-      y: 156,
-      size: 118,
+      x: 118,
+      y: 186,
+      size: 132,
     },
     {
       char: chars[1],
-      x: 200,
-      y: 132,
-      size: 70,
+      x: 206,
+      y: 184,
+      size: 104,
     },
   ];
 }
