@@ -9,7 +9,6 @@ import type { KanaItem } from "@/lib/types";
 import {
   getGhostGlyphs,
   getHint,
-  getStrokeGuide,
   isCombinedKana,
 } from "@/lib/write-kana-guides";
 
@@ -83,15 +82,10 @@ export default function WritePage() {
   const [showAnswer, setShowAnswer] = useState(false);
   const [roundCount, setRoundCount] = useState(1);
   const [showGhost, setShowGhost] = useState(true);
-  const [showStrokeGuide, setShowStrokeGuide] = useState(true);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
-
-  const answerCanvasRef = useRef<HTMLCanvasElement | null>(null);
-  const answerWrapperRef = useRef<HTMLDivElement | null>(null);
   const answerRef = useRef<HTMLDivElement | null>(null);
-
   const isDrawingRef = useRef(false);
 
   const filteredItems = useMemo(() => {
@@ -147,8 +141,6 @@ export default function WritePage() {
     ctx.moveTo(x + cellSize, y);
     ctx.lineTo(x, y + cellSize);
     ctx.stroke();
-
-    ctx.setLineDash([]);
   };
 
   const drawGhostChar = (
@@ -175,109 +167,7 @@ export default function WritePage() {
     });
   };
 
-  const drawArrowHead = (
-    ctx: CanvasRenderingContext2D,
-    fromX: number,
-    fromY: number,
-    toX: number,
-    toY: number,
-    color: string
-  ) => {
-    const angle = Math.atan2(toY - fromY, toX - fromX);
-    const size = 7;
-
-    ctx.save();
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 2;
-    ctx.lineCap = "round";
-
-    ctx.beginPath();
-    ctx.moveTo(toX, toY);
-    ctx.lineTo(
-      toX - size * Math.cos(angle - Math.PI / 6),
-      toY - size * Math.sin(angle - Math.PI / 6)
-    );
-    ctx.moveTo(toX, toY);
-    ctx.lineTo(
-      toX - size * Math.cos(angle + Math.PI / 6),
-      toY - size * Math.sin(angle + Math.PI / 6)
-    );
-    ctx.stroke();
-    ctx.restore();
-  };
-
-  const drawStrokeGuide = (
-    ctx: CanvasRenderingContext2D,
-    width: number,
-    height: number,
-    text: string,
-    options?: {
-      showNumbers?: boolean;
-      lineColor?: string;
-      pointColor?: string;
-      numberColor?: string;
-      alpha?: number;
-    }
-  ) => {
-    const guide = getStrokeGuide(text);
-    if (!guide) return;
-
-    const lineColor = options?.lineColor ?? "#60a5fa";
-    const pointColor = options?.pointColor ?? "#2563eb";
-    const numberColor = options?.numberColor ?? "#1d4ed8";
-    const showNumbers = options?.showNumbers ?? true;
-    const alpha = options?.alpha ?? 1;
-
-    guide.strokes.forEach((stroke) => {
-      ctx.save();
-      ctx.globalAlpha = alpha;
-      ctx.strokeStyle = lineColor;
-      ctx.lineWidth = 2.5;
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
-
-      ctx.beginPath();
-      stroke.points.forEach((point, index) => {
-        const x = scaleValue(point.x, width, 300);
-        const y = scaleValue(point.y, height, 300);
-
-        if (index === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      });
-      ctx.stroke();
-
-      const start = stroke.points[0];
-      const sx = scaleValue(start.x, width, 300);
-      const sy = scaleValue(start.y, height, 300);
-
-      ctx.fillStyle = pointColor;
-      ctx.beginPath();
-      ctx.arc(sx, sy, 4, 0, Math.PI * 2);
-      ctx.fill();
-
-      const ax1 = scaleValue(stroke.arrowFrom.x, width, 300);
-      const ay1 = scaleValue(stroke.arrowFrom.y, height, 300);
-      const ax2 = scaleValue(stroke.arrowTo.x, width, 300);
-      const ay2 = scaleValue(stroke.arrowTo.y, height, 300);
-
-      drawArrowHead(ctx, ax1, ay1, ax2, ay2, pointColor);
-
-      if (showNumbers) {
-        const lx = scaleValue(stroke.labelX, width, 300);
-        const ly = scaleValue(stroke.labelY, height, 300);
-
-        ctx.fillStyle = numberColor;
-        ctx.font = `700 ${scaleValue(14, width, 300)}px sans-serif`;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(stroke.label, lx, ly);
-      }
-
-      ctx.restore();
-    });
-  };
-
-  const drawPracticeGuide = () => {
+  const drawGuide = () => {
     const canvas = canvasRef.current;
     if (!canvas || !currentItem) return;
 
@@ -295,53 +185,16 @@ export default function WritePage() {
     ctx.lineWidth = 1;
 
     drawSingleCell(ctx, width, height);
+    ctx.setLineDash([]);
 
     if (showGhost) {
       drawGhostChar(ctx, width, height, currentItem.char);
-    }
-
-    if (showStrokeGuide) {
-      drawStrokeGuide(ctx, width, height, currentItem.char, {
-        showNumbers: true,
-        lineColor: "#93c5fd",
-        pointColor: "#2563eb",
-        numberColor: "#1d4ed8",
-        alpha: 0.95,
-      });
     }
 
     ctx.strokeStyle = "#111827";
     ctx.lineWidth = 7;
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
-  };
-
-  const drawAnswerPreview = () => {
-    const canvas = answerCanvasRef.current;
-    if (!canvas || !currentItem) return;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
-
-    ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, width, height);
-
-    ctx.strokeStyle = "#dbeafe";
-    ctx.lineWidth = 1;
-
-    drawSingleCell(ctx, width, height);
-    drawGhostChar(ctx, width, height, currentItem.char);
-    drawStrokeGuide(ctx, width, height, currentItem.char, {
-      showNumbers: true,
-      lineColor: "#60a5fa",
-      pointColor: "#2563eb",
-      numberColor: "#1d4ed8",
-      alpha: 1,
-    });
   };
 
   const resizeCanvas = () => {
@@ -363,41 +216,15 @@ export default function WritePage() {
     if (!ctx) return;
 
     ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-    drawPracticeGuide();
-  };
-
-  const resizeAnswerCanvas = () => {
-    const canvas = answerCanvasRef.current;
-    const wrapper = answerWrapperRef.current;
-    if (!canvas || !wrapper) return;
-
-    const rect = wrapper.getBoundingClientRect();
-    const ratio = window.devicePixelRatio || 1;
-    const cssWidth = rect.width;
-    const cssHeight = 260;
-
-    canvas.width = Math.floor(cssWidth * ratio);
-    canvas.height = Math.floor(cssHeight * ratio);
-    canvas.style.width = `${cssWidth}px`;
-    canvas.style.height = `${cssHeight}px`;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-    drawAnswerPreview();
+    drawGuide();
   };
 
   useEffect(() => {
     resizeCanvas();
-    resizeAnswerCanvas();
     window.addEventListener("resize", resizeCanvas);
-    window.addEventListener("resize", resizeAnswerCanvas);
 
     return () => {
       window.removeEventListener("resize", resizeCanvas);
-      window.removeEventListener("resize", resizeAnswerCanvas);
-
       if (typeof window !== "undefined" && "speechSynthesis" in window) {
         window.speechSynthesis.cancel();
       }
@@ -406,12 +233,7 @@ export default function WritePage() {
 
   useEffect(() => {
     resizeCanvas();
-  }, [currentIndex, mode, showGhost, showStrokeGuide, currentItem?.char]);
-
-  useEffect(() => {
-    if (!showAnswer) return;
-    resizeAnswerCanvas();
-  }, [showAnswer, currentIndex, mode, currentItem?.char]);
+  }, [currentIndex, mode, showGhost, currentItem?.char]);
 
   const getPoint = (event: React.PointerEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
@@ -459,7 +281,7 @@ export default function WritePage() {
   };
 
   const handleClearCanvas = () => {
-    drawPracticeGuide();
+    drawGuide();
   };
 
   const handleShowAnswer = () => {
@@ -469,7 +291,6 @@ export default function WritePage() {
         behavior: "smooth",
         block: "start",
       });
-      resizeAnswerCanvas();
     }, 80);
   };
 
@@ -665,19 +486,6 @@ export default function WritePage() {
 
                 <button
                   type="button"
-                  onClick={() => setShowStrokeGuide((prev) => !prev)}
-                  className={[
-                    "rounded-full px-3 py-1.5 text-xs font-semibold transition",
-                    showStrokeGuide
-                      ? "bg-blue-500 text-white"
-                      : "bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50",
-                  ].join(" ")}
-                >
-                  획순 {showStrokeGuide ? "ON" : "OFF"}
-                </button>
-
-                <button
-                  type="button"
                   onClick={handleClearCanvas}
                   className="rounded-full bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-600 ring-1 ring-slate-200 transition hover:bg-slate-100"
                 >
@@ -731,29 +539,8 @@ export default function WritePage() {
                     </div>
                   )}
                   <div className="mt-1 text-sm text-slate-500">
-                    숫자와 화살표를 보면서 획순과 방향을 같이 익혀보세요.
+                    이 모양을 참고해서 한 번 더 써보세요.
                   </div>
-                </div>
-              </div>
-
-              <div className="mt-4 rounded-[24px] bg-[linear-gradient(180deg,#f8fbff_0%,#ffffff_100%)] p-4 ring-1 ring-sky-100">
-                <div className="mb-3 flex items-center justify-between">
-                  <div className="text-xs font-semibold tracking-wide text-sky-700">
-                    획순 예시
-                  </div>
-                  <div className="text-[11px] text-slate-500">
-                    현재는 10자 시험판 적용
-                  </div>
-                </div>
-
-                <div
-                  ref={answerWrapperRef}
-                  className="overflow-hidden rounded-[20px] bg-white ring-1 ring-slate-200"
-                >
-                  <canvas
-                    ref={answerCanvasRef}
-                    className="block w-full bg-white"
-                  />
                 </div>
               </div>
 
