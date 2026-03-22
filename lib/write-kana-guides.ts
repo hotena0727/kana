@@ -76,84 +76,75 @@ export function getHint(char: string, script: "hiragana" | "katakana") {
 export function getGhostGlyphs(text: string): GhostGlyph[] {
   const chars = splitKanaString(text);
 
+  // 1글자
   if (chars.length <= 1) {
     return [
       {
         char: chars[0] || "",
         x: 150,
-        y: 154,
-        size: 160,
+        y: 205, // baseline 기준
+        size: 150,
       },
     ];
   }
 
-  export function getGhostGlyphs(text: string): GhostGlyph[] {
-    const chars = splitKanaString(text);
+  // 요음(2글자)
+  // 핵심:
+  // - 두 글자의 baseline(y)을 같게 둔다
+  // - 작은 글자는 오른쪽에 붙이고 size만 줄인다
+  return [
+    {
+      char: chars[0],
+      x: 122,
+      y: 205, // 같은 baseline
+      size: 118,
+    },
+    {
+      char: chars[1],
+      x: 202,
+      y: 205, // 같은 baseline
+      size: 72,
+    },
+  ];
+}
 
-    if (chars.length <= 1) {
-      return [
-        {
-          char: chars[0] || "",
-          x: 150,
-          y: 154,
-          size: 160,
-        },
-      ];
-    }
+export function getStrokeGuide(text: string): StrokeGuide | null {
+  const guides: Record<string, StrokeGuide> = {
+    あ: {
+      marks: [
+        { x: 90, y: 96, label: "①" },
+        { x: 118, y: 138, label: "②" },
+        { x: 214, y: 222, label: "③" },
+      ],
+    },
+    い: {
+      marks: [
+        { x: 108, y: 118, label: "①" },
+        { x: 204, y: 206, label: "②" },
+      ],
+    },
+    う: {
+      marks: [
+        { x: 142, y: 84, label: "①" },
+        { x: 204, y: 198, label: "②" },
+      ],
+    },
+    え: {
+      marks: [
+        { x: 134, y: 86, label: "①" },
+        { x: 104, y: 140, label: "②" },
+        { x: 204, y: 220, label: "③" },
+      ],
+    },
+    お: {
+      marks: [
+        { x: 90, y: 100, label: "①" },
+        { x: 116, y: 140, label: "②" },
+        { x: 220, y: 106, label: "③" },
+        { x: 218, y: 220, label: "④" },
+      ],
+    },
+  };
 
-    return [
-      {
-        char: chars[0],
-        x: 118,
-        y: 160,
-        size: 126,
-      },
-      {
-        char: chars[1],
-        x: 202,
-        y: 160,
-        size: 78,
-      },
-    ];
-  }
-
-  export function getStrokeGuide(text: string): StrokeGuide | null {
-    const guides: Record<string, StrokeGuide> = {
-      あ: {
-        marks: [
-          { x: 90, y: 96, label: "①" },
-          { x: 118, y: 138, label: "②" },
-          { x: 214, y: 222, label: "③" },
-        ],
-      },
-      い: {
-        marks: [
-          { x: 108, y: 118, label: "①" },
-          { x: 204, y: 206, label: "②" },
-        ],
-      },
-      う: {
-        marks: [
-          { x: 142, y: 84, label: "①" },
-          { x: 204, y: 198, label: "②" },
-        ],
-      },
-      え: {
-        marks: [
-          { x: 134, y: 86, label: "①" },
-          { x: 104, y: 140, label: "②" },
-          { x: 204, y: 220, label: "③" },
-        ],
-      },
-      お: {
-        marks: [
-          { x: 90, y: 100, label: "①" },
-          { x: 116, y: 140, label: "②" },
-          { x: 220, y: 106, label: "③" },
-          { x: 218, y: 220, label: "④" },
-        ],
-      },
-    };
-
-    return guides[text] || null;
-  }
+  return guides[text] || null;
+}

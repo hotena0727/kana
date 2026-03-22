@@ -250,7 +250,7 @@ export default function WritePage() {
       ctx.globalAlpha = 0.12;
       ctx.fillStyle = "#64748b";
       ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
+      ctx.textBaseline = "alphabetic"; // 중요: 같은 바닥선 맞추기
       ctx.font = `700 ${size}px "Noto Sans JP", "Hiragino Sans", sans-serif`;
       ctx.fillText(glyph.char, x, y);
       ctx.restore();
@@ -366,7 +366,7 @@ export default function WritePage() {
     isDrawingRef.current = false;
     try {
       canvas.releasePointerCapture(event.pointerId);
-    } catch {}
+    } catch { }
   };
 
   const handleClearCanvas = () => {
