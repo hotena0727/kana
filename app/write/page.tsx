@@ -552,7 +552,7 @@ export default function WritePage() {
 
           <div className="mt-4 rounded-[28px] bg-white p-4 ring-1 ring-slate-200 shadow-[0_10px_28px_rgba(15,23,42,0.04)]">
             <div className="flex items-center justify-between gap-2">
-              <div className="text-sm font-semibold text-sky-700">손글씨 연습칸</div>
+              <div className="text-sm font-semibold text-sky-700">손글씨 연습하기</div>
 
               <div className="flex items-center gap-2">
                 <button
