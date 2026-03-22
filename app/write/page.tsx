@@ -151,29 +151,6 @@ export default function WritePage() {
     height: number,
     text: string
   ) => {
-    const x = width / 2;
-    const y = height * 0.72;
-
-    const size = width * 0.42;
-
-    ctx.save();
-    ctx.globalAlpha = 0.12;
-    ctx.fillStyle = "#64748b";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "alphabetic";
-    ctx.font = `700 ${size}px "Noto Sans JP", "Hiragino Sans", sans-serif`;
-
-    ctx.fillText(text, x, y); // 🔥 핵심: 전체 문자열
-
-    ctx.restore();
-  };
-
-  const drawGhostChar = (
-    ctx: CanvasRenderingContext2D,
-    width: number,
-    height: number,
-    text: string
-  ) => {
     const glyphs = getGhostGlyphs(text);
 
     glyphs.forEach((glyph) => {
@@ -188,6 +165,28 @@ export default function WritePage() {
       ctx.textBaseline = "alphabetic";
       ctx.font = `700 ${size}px "Noto Sans JP", "Hiragino Sans", sans-serif`;
       ctx.fillText(glyph.char, x, y);
+      ctx.restore();
+    });
+  };
+
+  const drawStrokeMarks = (
+    ctx: CanvasRenderingContext2D,
+    width: number,
+    height: number,
+    guide: StrokeGuide | null
+  ) => {
+    if (!guide?.marks?.length) return;
+
+    guide.marks.forEach((mark) => {
+      const x = scaleValue(mark.x, width, 300);
+      const y = scaleValue(mark.y, height, 300);
+
+      ctx.save();
+      ctx.fillStyle = "#2563eb";
+      ctx.font = `700 ${scaleValue(18, width, 300)}px sans-serif`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(mark.label, x, y);
       ctx.restore();
     });
   };
@@ -266,6 +265,7 @@ export default function WritePage() {
   const getPoint = (event: React.PointerEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
     if (!canvas) return null;
+
     const rect = canvas.getBoundingClientRect();
     return {
       x: event.clientX - rect.left,
@@ -304,7 +304,7 @@ export default function WritePage() {
     isDrawingRef.current = false;
     try {
       canvas.releasePointerCapture(event.pointerId);
-    } catch { }
+    } catch {}
   };
 
   const handleClearCanvas = () => {
@@ -356,7 +356,9 @@ export default function WritePage() {
       <main className="min-h-screen bg-[linear-gradient(180deg,#f7fbff_0%,#eef6ff_45%,#f9fcff_100%)] pb-24 text-slate-900">
         <section className="mx-auto flex min-h-screen w-full max-w-md flex-col px-5 py-7">
           <div className="rounded-[30px] bg-white p-6 shadow-[0_16px_40px_rgba(15,23,42,0.08)] ring-1 ring-slate-100">
-            <h1 className="text-2xl font-extrabold tracking-tight">손으로 써보기</h1>
+            <h1 className="text-2xl font-extrabold tracking-tight">
+              손으로 써보기
+            </h1>
             <p className="mt-3 text-sm leading-6 text-slate-600">
               표시할 문자가 없습니다.
             </p>
@@ -430,7 +432,8 @@ export default function WritePage() {
           <div className="flex items-center justify-between">
             <div className="text-sm font-semibold text-sky-700">현재 문제</div>
             <div className="text-xs text-slate-500">
-              {Math.min(currentIndex + 1, filteredItems.length)} / {filteredItems.length}
+              {Math.min(currentIndex + 1, filteredItems.length)} /{" "}
+              {filteredItems.length}
             </div>
           </div>
 
@@ -489,7 +492,9 @@ export default function WritePage() {
 
           <div className="mt-4 rounded-[28px] bg-white p-4 ring-1 ring-slate-200 shadow-[0_10px_28px_rgba(15,23,42,0.04)]">
             <div className="flex items-center justify-between gap-2">
-              <div className="text-sm font-semibold text-sky-700">손글씨 연습칸</div>
+              <div className="text-sm font-semibold text-sky-700">
+                손글씨 연습칸
+              </div>
 
               <div className="flex items-center gap-2">
                 <button
@@ -608,7 +613,8 @@ export default function WritePage() {
           </div>
 
           <div className="mt-4 rounded-2xl bg-slate-50 px-4 py-3 text-sm leading-6 text-slate-600 ring-1 ring-slate-200">
-            지금까지 <span className="font-bold text-slate-900">{roundCount}</span>문제째
+            지금까지{" "}
+            <span className="font-bold text-slate-900">{roundCount}</span>문제째
             써보고 있어요. 한 글자씩 천천히 써보는 것이 더 좋습니다.
           </div>
         </div>
