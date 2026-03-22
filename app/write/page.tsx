@@ -168,24 +168,26 @@ export default function WritePage() {
     ctx.restore();
   };
 
-  const drawStrokeMarks = (
+  const drawGhostChar = (
     ctx: CanvasRenderingContext2D,
     width: number,
     height: number,
-    guide: StrokeGuide | null
+    text: string
   ) => {
-    if (!guide) return;
+    const glyphs = getGhostGlyphs(text);
 
-    guide.marks.forEach((mark) => {
-      const x = scaleValue(mark.x, width, 300);
-      const y = scaleValue(mark.y, height, 300);
+    glyphs.forEach((glyph) => {
+      const x = scaleValue(glyph.x, width, 300);
+      const y = scaleValue(glyph.y, height, 300);
+      const size = scaleValue(glyph.size, width, 300);
 
       ctx.save();
-      ctx.fillStyle = "#2563eb";
-      ctx.font = `700 ${scaleValue(22, width, 300)}px "Noto Sans KR", sans-serif`;
+      ctx.globalAlpha = 0.12;
+      ctx.fillStyle = "#64748b";
       ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText(mark.label, x, y);
+      ctx.textBaseline = "alphabetic";
+      ctx.font = `700 ${size}px "Noto Sans JP", "Hiragino Sans", sans-serif`;
+      ctx.fillText(glyph.char, x, y);
       ctx.restore();
     });
   };
