@@ -20,18 +20,8 @@ type StrokeMark = {
   label: string;
 };
 
-type StrokeFlow = {
-  x1: number;
-  y1: number;
-  cx?: number;
-  cy?: number;
-  x2: number;
-  y2: number;
-};
-
 type StrokeGuide = {
   marks: StrokeMark[];
-  flows?: StrokeFlow[];
 };
 
 const hiraganaList = (hiraganaData as KanaItem[]).map((item) => ({
@@ -115,16 +105,6 @@ function getStrokeHint(item: StudyItem) {
     て: "짧은 선 뒤 긴 흐름을 자연스럽게 이어 보세요.",
     と: "점과 곡선을 너무 붙이지 말고 써보세요.",
     の: "한 번에 둥글게 이어 쓴다는 느낌으로 써보세요.",
-    は: "왼쪽 두 획과 오른쪽 곡선을 나눠 보세요.",
-    ふ: "점 두 개와 아래 곡선을 구분해서 보세요.",
-    ま: "윗부분과 아래 선의 간격을 일정하게 보세요.",
-    や: "왼쪽과 오른쪽 획 길이 차이를 보세요.",
-    ゆ: "겹쳐 보이는 부분을 천천히 나눠 보세요.",
-    よ: "세 줄 간격을 일정하게 맞춰 보세요.",
-    り: "두 획의 높이와 간격 차이를 살려 보세요.",
-    る: "둥근 흐름을 끊지 말고 이어 보세요.",
-    ろ: "모서리를 너무 각지지 않게 둥글게 이어 보세요.",
-    ん: "짧은 시작 후 마지막 곡선을 부드럽게 이어 보세요.",
 
     ア: "짧은 윗획 뒤 아래 흐름을 곧게 잡아 보세요.",
     イ: "왼쪽 짧은 획과 오른쪽 긴 대각선의 차이를 살려 보세요.",
@@ -141,16 +121,6 @@ function getStrokeHint(item: StudyItem) {
     テ: "윗선과 아래 흐름을 따로 보세요.",
     ト: "짧은 가로선 뒤 세로 흐름을 곧게 내려 보세요.",
     ノ: "한 번에 툭 내려 긋는 느낌으로 써보세요.",
-    ハ: "양쪽 대각선 벌어지는 각도를 맞춰 보세요.",
-    ヒ: "가로 흐름 뒤 왼쪽 아래로 빠지는 방향을 보세요.",
-    フ: "가로선과 아래 흐름 둘을 분리해 보세요.",
-    マ: "윗부분과 아래 점/가로선의 간격을 보세요.",
-    ミ: "세 가로선 간격을 일정하게 보세요.",
-    メ: "짧은 시작 뒤 큰 대각선과 교차 흐름을 보세요.",
-    ヤ: "가운데 긴 흐름을 중심으로 나머지를 붙여 보세요.",
-    ヨ: "세 칸 구조처럼 간격을 맞추면 더 또렷합니다.",
-    リ: "두 세로 흐름의 간격과 높이 차이를 보세요.",
-    ル: "왼쪽 짧은 획 뒤 아래 흐름을 부드럽게 이어 보세요.",
     ロ: "네모 틀이 찌그러지지 않게 균형을 보세요.",
     ン: "짧은 점 뒤 긴 흐름이 자연스럽게 이어지게 보세요.",
   };
@@ -166,389 +136,201 @@ function getStrokeGuide(char: string): StrokeGuide | null {
   const guides: Record<string, StrokeGuide> = {
     あ: {
       marks: [
-        { x: 96, y: 96, label: "①" },
-        { x: 122, y: 134, label: "②" },
-        { x: 206, y: 218, label: "③" },
-      ],
-      flows: [
-        { x1: 108, y1: 104, x2: 118, y2: 118 },
-        { x1: 134, y1: 142, x2: 144, y2: 154 },
-        { x1: 194, y1: 202, cx: 206, cy: 206, x2: 214, y2: 214 },
+        { x: 88, y: 94, label: "①" },
+        { x: 116, y: 136, label: "②" },
+        { x: 218, y: 226, label: "③" },
       ],
     },
     い: {
       marks: [
-        { x: 112, y: 120, label: "①" },
-        { x: 198, y: 202, label: "②" },
-      ],
-      flows: [
-        { x1: 122, y1: 128, x2: 132, y2: 142 },
-        { x1: 186, y1: 188, x2: 194, y2: 198 },
+        { x: 106, y: 116, label: "①" },
+        { x: 206, y: 208, label: "②" },
       ],
     },
     う: {
       marks: [
-        { x: 144, y: 88, label: "①" },
-        { x: 194, y: 194, label: "②" },
-      ],
-      flows: [
-        { x1: 150, y1: 96, x2: 158, y2: 106 },
-        { x1: 180, y1: 180, cx: 190, cy: 184, x2: 200, y2: 190 },
+        { x: 140, y: 82, label: "①" },
+        { x: 206, y: 200, label: "②" },
       ],
     },
     え: {
       marks: [
-        { x: 136, y: 88, label: "①" },
-        { x: 108, y: 140, label: "②" },
-        { x: 198, y: 212, label: "③" },
-      ],
-      flows: [
-        { x1: 144, y1: 96, x2: 152, y2: 104 },
-        { x1: 116, y1: 146, x2: 126, y2: 154 },
-        { x1: 186, y1: 198, cx: 194, cy: 204, x2: 204, y2: 208 },
+        { x: 132, y: 84, label: "①" },
+        { x: 102, y: 140, label: "②" },
+        { x: 206, y: 222, label: "③" },
       ],
     },
     お: {
       marks: [
-        { x: 96, y: 102, label: "①" },
-        { x: 120, y: 142, label: "②" },
-        { x: 214, y: 108, label: "③" },
-        { x: 214, y: 214, label: "④" },
-      ],
-      flows: [
-        { x1: 108, y1: 110, x2: 118, y2: 122 },
-        { x1: 132, y1: 150, x2: 142, y2: 162 },
-        { x1: 202, y1: 118, x2: 194, y2: 128 },
-        { x1: 202, y1: 202, cx: 208, cy: 208, x2: 214, y2: 210 },
+        { x: 88, y: 98, label: "①" },
+        { x: 114, y: 140, label: "②" },
+        { x: 222, y: 104, label: "③" },
+        { x: 220, y: 224, label: "④" },
       ],
     },
     か: {
       marks: [
-        { x: 98, y: 110, label: "①" },
-        { x: 138, y: 148, label: "②" },
-        { x: 214, y: 110, label: "③" },
-      ],
-      flows: [
-        { x1: 110, y1: 118, x2: 120, y2: 130 },
-        { x1: 150, y1: 156, x2: 160, y2: 168 },
-        { x1: 202, y1: 120, cx: 208, cy: 128, x2: 214, y2: 138 },
+        { x: 96, y: 108, label: "①" },
+        { x: 136, y: 148, label: "②" },
+        { x: 218, y: 110, label: "③" },
       ],
     },
     き: {
       marks: [
-        { x: 144, y: 90, label: "①" },
-        { x: 138, y: 136, label: "②" },
-        { x: 130, y: 188, label: "③" },
-        { x: 214, y: 214, label: "④" },
-      ],
-      flows: [
-        { x1: 152, y1: 98, x2: 160, y2: 106 },
-        { x1: 146, y1: 144, x2: 154, y2: 150 },
-        { x1: 138, y1: 194, x2: 146, y2: 198 },
-        { x1: 202, y1: 206, x2: 194, y2: 202 },
+        { x: 142, y: 88, label: "①" },
+        { x: 136, y: 134, label: "②" },
+        { x: 128, y: 188, label: "③" },
+        { x: 216, y: 216, label: "④" },
       ],
     },
     く: {
-      marks: [{ x: 198, y: 164, label: "①" }],
-      flows: [{ x1: 184, y1: 150, cx: 190, cy: 158, x2: 198, y2: 168 }],
+      marks: [{ x: 204, y: 166, label: "①" }],
     },
     こ: {
       marks: [
-        { x: 144, y: 106, label: "①" },
-        { x: 144, y: 212, label: "②" },
-      ],
-      flows: [
-        { x1: 154, y1: 112, x2: 162, y2: 112 },
-        { x1: 154, y1: 206, x2: 162, y2: 206 },
+        { x: 142, y: 104, label: "①" },
+        { x: 142, y: 216, label: "②" },
       ],
     },
     さ: {
       marks: [
-        { x: 144, y: 92, label: "①" },
-        { x: 98, y: 146, label: "②" },
-        { x: 214, y: 150, label: "③" },
-      ],
-      flows: [
-        { x1: 152, y1: 98, x2: 160, y2: 104 },
-        { x1: 110, y1: 152, x2: 120, y2: 160 },
-        { x1: 202, y1: 158, cx: 208, cy: 164, x2: 214, y2: 172 },
+        { x: 142, y: 90, label: "①" },
+        { x: 94, y: 146, label: "②" },
+        { x: 216, y: 152, label: "③" },
       ],
     },
     し: {
-      marks: [{ x: 196, y: 198, label: "①" }],
-      flows: [{ x1: 184, y1: 186, cx: 190, cy: 192, x2: 198, y2: 198 }],
+      marks: [{ x: 200, y: 202, label: "①" }],
     },
     す: {
       marks: [
-        { x: 144, y: 92, label: "①" },
-        { x: 214, y: 204, label: "②" },
-      ],
-      flows: [
-        { x1: 152, y1: 98, x2: 160, y2: 104 },
-        { x1: 198, y1: 188, cx: 206, cy: 194, x2: 214, y2: 200 },
+        { x: 142, y: 90, label: "①" },
+        { x: 218, y: 206, label: "②" },
       ],
     },
     た: {
       marks: [
-        { x: 98, y: 112, label: "①" },
-        { x: 142, y: 148, label: "②" },
-        { x: 210, y: 188, label: "③" },
-      ],
-      flows: [
-        { x1: 110, y1: 120, x2: 118, y2: 132 },
-        { x1: 152, y1: 156, x2: 160, y2: 168 },
-        { x1: 196, y1: 176, cx: 204, cy: 182, x2: 212, y2: 188 },
+        { x: 96, y: 110, label: "①" },
+        { x: 140, y: 148, label: "②" },
+        { x: 214, y: 190, label: "③" },
       ],
     },
     ち: {
       marks: [
-        { x: 144, y: 92, label: "①" },
-        { x: 114, y: 142, label: "②" },
-        { x: 206, y: 202, label: "③" },
-      ],
-      flows: [
-        { x1: 152, y1: 98, x2: 160, y2: 104 },
-        { x1: 124, y1: 150, x2: 132, y2: 158 },
-        { x1: 192, y1: 188, cx: 200, cy: 194, x2: 208, y2: 198 },
+        { x: 142, y: 90, label: "①" },
+        { x: 112, y: 142, label: "②" },
+        { x: 208, y: 204, label: "③" },
       ],
     },
     つ: {
-      marks: [{ x: 198, y: 182, label: "①" }],
-      flows: [{ x1: 184, y1: 168, cx: 192, cy: 174, x2: 200, y2: 180 }],
+      marks: [{ x: 202, y: 184, label: "①" }],
     },
     て: {
       marks: [
-        { x: 144, y: 94, label: "①" },
-        { x: 204, y: 194, label: "②" },
-      ],
-      flows: [
-        { x1: 152, y1: 100, x2: 160, y2: 104 },
-        { x1: 192, y1: 182, cx: 198, cy: 188, x2: 206, y2: 194 },
+        { x: 142, y: 92, label: "①" },
+        { x: 206, y: 196, label: "②" },
       ],
     },
     の: {
-      marks: [{ x: 194, y: 184, label: "①" }],
-      flows: [{ x1: 180, y1: 170, cx: 188, cy: 176, x2: 196, y2: 184 }],
+      marks: [{ x: 198, y: 186, label: "①" }],
     },
 
     ア: {
       marks: [
-        { x: 144, y: 96, label: "①" },
-        { x: 204, y: 192, label: "②" },
-      ],
-      flows: [
-        { x1: 152, y1: 102, x2: 160, y2: 106 },
-        { x1: 192, y1: 180, x2: 200, y2: 188 },
+        { x: 142, y: 94, label: "①" },
+        { x: 206, y: 194, label: "②" },
       ],
     },
     イ: {
       marks: [
-        { x: 98, y: 114, label: "①" },
-        { x: 206, y: 194, label: "②" },
-      ],
-      flows: [
-        { x1: 110, y1: 120, x2: 120, y2: 130 },
-        { x1: 194, y1: 182, x2: 202, y2: 190 },
+        { x: 96, y: 112, label: "①" },
+        { x: 208, y: 196, label: "②" },
       ],
     },
     ウ: {
       marks: [
-        { x: 144, y: 86, label: "①" },
-        { x: 204, y: 194, label: "②" },
-      ],
-      flows: [
-        { x1: 152, y1: 94, x2: 160, y2: 100 },
-        { x1: 192, y1: 182, x2: 200, y2: 190 },
+        { x: 142, y: 82, label: "①" },
+        { x: 206, y: 196, label: "②" },
       ],
     },
     エ: {
       marks: [
-        { x: 144, y: 92, label: "①" },
-        { x: 104, y: 146, label: "②" },
-        { x: 194, y: 212, label: "③" },
-      ],
-      flows: [
-        { x1: 152, y1: 98, x2: 160, y2: 102 },
-        { x1: 116, y1: 152, x2: 126, y2: 152 },
-        { x1: 182, y1: 206, x2: 190, y2: 206 },
+        { x: 142, y: 90, label: "①" },
+        { x: 100, y: 146, label: "②" },
+        { x: 196, y: 214, label: "③" },
       ],
     },
     オ: {
       marks: [
-        { x: 144, y: 92, label: "①" },
-        { x: 102, y: 146, label: "②" },
-        { x: 214, y: 108, label: "③" },
-        { x: 210, y: 210, label: "④" },
-      ],
-      flows: [
-        { x1: 152, y1: 98, x2: 160, y2: 102 },
-        { x1: 114, y1: 152, x2: 124, y2: 152 },
-        { x1: 204, y1: 118, x2: 194, y2: 126 },
-        { x1: 198, y1: 198, x2: 190, y2: 204 },
+        { x: 142, y: 90, label: "①" },
+        { x: 100, y: 146, label: "②" },
+        { x: 220, y: 104, label: "③" },
+        { x: 214, y: 214, label: "④" },
       ],
     },
     カ: {
       marks: [
-        { x: 148, y: 98, label: "①" },
-        { x: 204, y: 192, label: "②" },
-      ],
-      flows: [
-        { x1: 156, y1: 104, x2: 164, y2: 108 },
-        { x1: 194, y1: 182, x2: 202, y2: 190 },
+        { x: 146, y: 96, label: "①" },
+        { x: 206, y: 194, label: "②" },
       ],
     },
     キ: {
       marks: [
-        { x: 144, y: 92, label: "①" },
-        { x: 138, y: 136, label: "②" },
-        { x: 204, y: 210, label: "③" },
-      ],
-      flows: [
-        { x1: 152, y1: 98, x2: 160, y2: 100 },
-        { x1: 146, y1: 142, x2: 154, y2: 144 },
-        { x1: 194, y1: 202, x2: 186, y2: 198 },
+        { x: 142, y: 90, label: "①" },
+        { x: 136, y: 136, label: "②" },
+        { x: 206, y: 214, label: "③" },
       ],
     },
     ク: {
-      marks: [{ x: 202, y: 176, label: "①" }],
-      flows: [{ x1: 188, y1: 164, cx: 194, cy: 170, x2: 202, y2: 176 }],
+      marks: [{ x: 206, y: 178, label: "①" }],
     },
     コ: {
       marks: [
-        { x: 98, y: 108, label: "①" },
-        { x: 214, y: 108, label: "②" },
-        { x: 212, y: 212, label: "③" },
-      ],
-      flows: [
-        { x1: 110, y1: 112, x2: 120, y2: 112 },
-        { x1: 202, y1: 112, x2: 192, y2: 112 },
-        { x1: 202, y1: 200, x2: 194, y2: 208 },
+        { x: 96, y: 106, label: "①" },
+        { x: 220, y: 106, label: "②" },
+        { x: 218, y: 214, label: "③" },
       ],
     },
     シ: {
       marks: [
-        { x: 112, y: 96, label: "①" },
-        { x: 132, y: 128, label: "②" },
-        { x: 202, y: 198, label: "③" },
-      ],
-      flows: [
-        { x1: 120, y1: 102, x2: 126, y2: 108 },
-        { x1: 140, y1: 134, x2: 146, y2: 140 },
-        { x1: 190, y1: 186, x2: 198, y2: 194 },
+        { x: 110, y: 94, label: "①" },
+        { x: 132, y: 126, label: "②" },
+        { x: 206, y: 200, label: "③" },
       ],
     },
     ス: {
       marks: [
-        { x: 144, y: 94, label: "①" },
-        { x: 204, y: 194, label: "②" },
-      ],
-      flows: [
-        { x1: 152, y1: 100, x2: 160, y2: 104 },
-        { x1: 192, y1: 184, x2: 200, y2: 192 },
+        { x: 142, y: 92, label: "①" },
+        { x: 206, y: 196, label: "②" },
       ],
     },
     ツ: {
       marks: [
-        { x: 110, y: 94, label: "①" },
-        { x: 136, y: 120, label: "②" },
-        { x: 164, y: 146, label: "③" },
-      ],
-      flows: [
-        { x1: 118, y1: 100, x2: 124, y2: 106 },
-        { x1: 144, y1: 126, x2: 150, y2: 132 },
-        { x1: 172, y1: 152, x2: 178, y2: 158 },
+        { x: 108, y: 92, label: "①" },
+        { x: 136, y: 118, label: "②" },
+        { x: 166, y: 146, label: "③" },
       ],
     },
     テ: {
       marks: [
-        { x: 144, y: 94, label: "①" },
-        { x: 204, y: 194, label: "②" },
-      ],
-      flows: [
-        { x1: 152, y1: 100, x2: 160, y2: 104 },
-        { x1: 192, y1: 184, x2: 200, y2: 192 },
+        { x: 142, y: 92, label: "①" },
+        { x: 206, y: 196, label: "②" },
       ],
     },
     ノ: {
-      marks: [{ x: 198, y: 178, label: "①" }],
-      flows: [{ x1: 186, y1: 166, x2: 194, y2: 174 }],
-    },
-    ハ: {
-      marks: [
-        { x: 104, y: 160, label: "①" },
-        { x: 214, y: 160, label: "②" },
-      ],
-      flows: [
-        { x1: 116, y1: 150, x2: 124, y2: 158 },
-        { x1: 202, y1: 150, x2: 194, y2: 158 },
-      ],
-    },
-    フ: {
-      marks: [
-        { x: 144, y: 100, label: "①" },
-        { x: 106, y: 144, label: "②" },
-        { x: 204, y: 196, label: "③" },
-      ],
-      flows: [
-        { x1: 152, y1: 106, x2: 160, y2: 108 },
-        { x1: 118, y1: 150, x2: 126, y2: 156 },
-        { x1: 192, y1: 186, x2: 200, y2: 194 },
-      ],
-    },
-    ミ: {
-      marks: [
-        { x: 144, y: 96, label: "①" },
-        { x: 134, y: 150, label: "②" },
-        { x: 124, y: 208, label: "③" },
-      ],
-      flows: [
-        { x1: 152, y1: 100, x2: 160, y2: 102 },
-        { x1: 142, y1: 154, x2: 150, y2: 156 },
-        { x1: 132, y1: 212, x2: 140, y2: 214 },
-      ],
-    },
-    ヨ: {
-      marks: [
-        { x: 98, y: 108, label: "①" },
-        { x: 98, y: 156, label: "②" },
-        { x: 98, y: 208, label: "③" },
-      ],
-      flows: [
-        { x1: 110, y1: 112, x2: 120, y2: 112 },
-        { x1: 110, y1: 160, x2: 120, y2: 160 },
-        { x1: 110, y1: 212, x2: 120, y2: 212 },
-      ],
-    },
-    リ: {
-      marks: [
-        { x: 112, y: 154, label: "①" },
-        { x: 204, y: 194, label: "②" },
-      ],
-      flows: [
-        { x1: 122, y1: 146, x2: 130, y2: 154 },
-        { x1: 194, y1: 184, x2: 202, y2: 192 },
-      ],
+      marks: [{ x: 202, y: 180, label: "①" }],
     },
     ロ: {
       marks: [
-        { x: 98, y: 108, label: "①" },
-        { x: 214, y: 108, label: "②" },
-        { x: 214, y: 212, label: "③" },
-      ],
-      flows: [
-        { x1: 110, y1: 112, x2: 120, y2: 112 },
-        { x1: 202, y1: 112, x2: 194, y2: 112 },
-        { x1: 202, y1: 200, x2: 194, y2: 208 },
+        { x: 96, y: 106, label: "①" },
+        { x: 220, y: 106, label: "②" },
+        { x: 218, y: 214, label: "③" },
       ],
     },
     ン: {
       marks: [
-        { x: 130, y: 100, label: "①" },
-        { x: 202, y: 194, label: "②" },
-      ],
-      flows: [
-        { x1: 138, y1: 108, x2: 144, y2: 114 },
-        { x1: 190, y1: 184, x2: 198, y2: 192 },
+        { x: 128, y: 98, label: "①" },
+        { x: 206, y: 196, label: "②" },
       ],
     },
   };
@@ -556,11 +338,7 @@ function getStrokeGuide(char: string): StrokeGuide | null {
   return guides[char] || null;
 }
 
-function scaleMarkOrFlowValue(
-  value: number,
-  actual: number,
-  base: number
-) {
+function scaleGuideValue(value: number, actual: number, base: number) {
   return (value / base) * actual;
 }
 
@@ -683,74 +461,15 @@ export default function WritePage() {
     height: number,
     char: string
   ) => {
+    const fontSize = gridMode === "single" ? 180 : 150;
+
     ctx.save();
-    ctx.globalAlpha = 0.11;
+    ctx.globalAlpha = 0.12;
     ctx.fillStyle = "#64748b";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.font = `700 96px "Noto Sans JP", "Hiragino Sans", sans-serif`;
+    ctx.font = `700 ${fontSize}px "Noto Sans JP", "Hiragino Sans", sans-serif`;
     ctx.fillText(char, width / 2, height / 2);
-    ctx.restore();
-  };
-
-  const drawSoftArrow = (
-    ctx: CanvasRenderingContext2D,
-    width: number,
-    height: number,
-    flow: StrokeFlow
-  ) => {
-    const baseWidth = 300;
-    const baseHeight = gridMode === "single" ? 300 : 340;
-
-    const x1 = scaleMarkOrFlowValue(flow.x1, width, baseWidth);
-    const y1 = scaleMarkOrFlowValue(flow.y1, height, baseHeight);
-    const x2 = scaleMarkOrFlowValue(flow.x2, width, baseWidth);
-    const y2 = scaleMarkOrFlowValue(flow.y2, height, baseHeight);
-    const cx =
-      flow.cx !== undefined
-        ? scaleMarkOrFlowValue(flow.cx, width, baseWidth)
-        : undefined;
-    const cy =
-      flow.cy !== undefined
-        ? scaleMarkOrFlowValue(flow.cy, height, baseHeight)
-        : undefined;
-
-    ctx.save();
-    ctx.strokeStyle = "rgba(14, 165, 233, 0.42)";
-    ctx.fillStyle = "rgba(14, 165, 233, 0.42)";
-    ctx.lineWidth = 1.25;
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    if (cx !== undefined && cy !== undefined) {
-      ctx.quadraticCurveTo(cx, cy, x2, y2);
-    } else {
-      ctx.lineTo(x2, y2);
-    }
-    ctx.stroke();
-
-    const angle =
-      cx !== undefined && cy !== undefined
-        ? Math.atan2(y2 - cy, x2 - cx)
-        : Math.atan2(y2 - y1, x2 - x1);
-
-    const head = 4.5;
-
-    ctx.beginPath();
-    ctx.moveTo(x2, y2);
-    ctx.lineTo(
-      x2 - head * Math.cos(angle - Math.PI / 7),
-      y2 - head * Math.sin(angle - Math.PI / 7)
-    );
-    ctx.lineTo(
-      x2 - head * Math.cos(angle + Math.PI / 7),
-      y2 - head * Math.sin(angle + Math.PI / 7)
-    );
-    ctx.closePath();
-    ctx.fill();
-
     ctx.restore();
   };
 
@@ -765,16 +484,12 @@ export default function WritePage() {
     const baseWidth = 300;
     const baseHeight = gridMode === "single" ? 300 : 340;
 
-    if (guide.flows?.length) {
-      guide.flows.forEach((flow) => drawSoftArrow(ctx, width, height, flow));
-    }
-
     guide.marks.forEach((mark) => {
-      const x = scaleMarkOrFlowValue(mark.x, width, baseWidth);
-      const y = scaleMarkOrFlowValue(mark.y, height, baseHeight);
+      const x = scaleGuideValue(mark.x, width, baseWidth);
+      const y = scaleGuideValue(mark.y, height, baseHeight);
 
       ctx.save();
-      ctx.fillStyle = "rgba(51, 65, 85, 0.66)";
+      ctx.fillStyle = "rgba(51, 65, 85, 0.68)";
       ctx.font = '600 14px "Noto Sans JP", "Noto Sans KR", sans-serif';
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
@@ -972,18 +687,18 @@ export default function WritePage() {
             ← 홈으로
           </Link>
 
-          <div className="mt-4 inline-flex rounded-full bg-sky-50 px-3 py-1 text-sm font-semibold text-sky-700 ring-1 ring-sky-100">
+          <div className="mt-6 inline-flex rounded-full bg-sky-50 px-3 py-1 text-sm font-semibold text-sky-700 ring-1 ring-sky-100">
             ✍️ 손으로 써보기
           </div>
 
-          <h1 className="mt-4 text-[30px] font-extrabold leading-tight tracking-tight">
+          <h1 className="mt-5 text-[30px] font-extrabold leading-tight tracking-tight">
             눈으로만 보지 말고,
             <br />
             직접 써보며 익혀보세요.
           </h1>
 
           <p className="mt-3 text-[15px] leading-7 text-slate-600">
-            원고지 칸에 손가락이나 펜으로 직접 써보세요. 반투명 예시와 작은 획순 표시를
+            원고지 칸에 손가락이나 펜으로 직접 써보세요. 반투명 예시와 작은 획순 번호를
             참고하면서 천천히 따라 쓰면 훨씬 자연스럽게 익힐 수 있습니다.
           </p>
         </div>
@@ -1163,8 +878,8 @@ export default function WritePage() {
 
             <div className="mt-3 rounded-2xl bg-slate-50 px-4 py-3 text-sm leading-6 text-slate-600 ring-1 ring-slate-200">
               {showGhost
-                ? "반투명 예시와 작은 획순 표시를 참고해 그대로 따라 써보세요."
-                : "반투명 예시를 끄면 빈 칸에 스스로 떠올려 쓰는 연습을 할 수 있습니다."}
+                ? "예시 ON 상태입니다. 원고지 안의 연한 글자와 작은 획순 번호를 참고해 따라 써보세요."
+                : "예시 OFF 상태입니다. 빈 칸에 스스로 떠올려 쓰는 연습을 해보세요."}
             </div>
           </div>
 
