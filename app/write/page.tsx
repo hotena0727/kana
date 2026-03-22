@@ -277,7 +277,7 @@ export default function WritePage() {
     isDrawingRef.current = false;
     try {
       canvas.releasePointerCapture(event.pointerId);
-    } catch {}
+    } catch { }
   };
 
   const handleClearCanvas = () => {
@@ -346,18 +346,19 @@ export default function WritePage() {
     <main className="min-h-screen bg-[linear-gradient(180deg,#f7fbff_0%,#eef6ff_45%,#f9fcff_100%)] pb-24 text-slate-900">
       <section className="mx-auto flex min-h-screen w-full max-w-md flex-col px-5 py-7">
         <div className="mb-5 overflow-hidden rounded-[32px] bg-white/85 p-6 shadow-[0_18px_45px_rgba(15,23,42,0.08)] ring-1 ring-sky-100 backdrop-blur">
-          <Link
-            href="/"
-            className="inline-flex rounded-full bg-sky-50 px-3 py-1 text-sm font-semibold text-sky-700 ring-1 ring-sky-100"
-          >
-            ← 홈으로
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/"
+              className="inline-flex rounded-full bg-sky-50 px-3 py-1 text-sm font-semibold text-sky-700 ring-1 ring-sky-100"
+            >
+              ← 홈으로
+            </Link>
 
-          <div className="mt-6 inline-flex rounded-full bg-sky-50 px-3 py-1 text-sm font-semibold text-sky-700 ring-1 ring-sky-100">
-            ✍️ 손으로 써보기
+            <div className="inline-flex rounded-full bg-sky-50 px-3 py-1 text-sm font-semibold text-sky-700 ring-1 ring-sky-100">
+              ✍️ 손으로 써보기
+            </div>
           </div>
-
-          <h1 className="mt-5 text-[30px] font-extrabold leading-tight tracking-tight">
+          <h1 className="mt-6 text-[30px] font-extrabold leading-tight tracking-tight">
             눈으로만 보지 말고,
             <br />
             직접 써보며 익혀보세요.
