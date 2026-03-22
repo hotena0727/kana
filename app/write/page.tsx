@@ -14,16 +14,6 @@ type StudyItem = KanaItem & {
   script: "hiragana" | "katakana";
 };
 
-type StrokeMark = {
-  x: number;
-  y: number;
-  label: string;
-};
-
-type StrokeGuide = {
-  marks: StrokeMark[];
-};
-
 const hiraganaList = (hiraganaData as KanaItem[]).map((item) => ({
   ...item,
   script: "hiragana" as const,
@@ -132,216 +122,6 @@ function getStrokeHint(item: StudyItem) {
     : "가타카나는 방향과 길이를 또렷하게 나눠서 써보세요.";
 }
 
-function getStrokeGuide(char: string): StrokeGuide | null {
-  const guides: Record<string, StrokeGuide> = {
-    あ: {
-      marks: [
-        { x: 88, y: 94, label: "①" },
-        { x: 116, y: 136, label: "②" },
-        { x: 218, y: 226, label: "③" },
-      ],
-    },
-    い: {
-      marks: [
-        { x: 106, y: 116, label: "①" },
-        { x: 206, y: 208, label: "②" },
-      ],
-    },
-    う: {
-      marks: [
-        { x: 140, y: 82, label: "①" },
-        { x: 206, y: 200, label: "②" },
-      ],
-    },
-    え: {
-      marks: [
-        { x: 132, y: 84, label: "①" },
-        { x: 102, y: 140, label: "②" },
-        { x: 206, y: 222, label: "③" },
-      ],
-    },
-    お: {
-      marks: [
-        { x: 88, y: 98, label: "①" },
-        { x: 114, y: 140, label: "②" },
-        { x: 222, y: 104, label: "③" },
-        { x: 220, y: 224, label: "④" },
-      ],
-    },
-    か: {
-      marks: [
-        { x: 96, y: 108, label: "①" },
-        { x: 136, y: 148, label: "②" },
-        { x: 218, y: 110, label: "③" },
-      ],
-    },
-    き: {
-      marks: [
-        { x: 142, y: 88, label: "①" },
-        { x: 136, y: 134, label: "②" },
-        { x: 128, y: 188, label: "③" },
-        { x: 216, y: 216, label: "④" },
-      ],
-    },
-    く: {
-      marks: [{ x: 204, y: 166, label: "①" }],
-    },
-    こ: {
-      marks: [
-        { x: 142, y: 104, label: "①" },
-        { x: 142, y: 216, label: "②" },
-      ],
-    },
-    さ: {
-      marks: [
-        { x: 142, y: 90, label: "①" },
-        { x: 94, y: 146, label: "②" },
-        { x: 216, y: 152, label: "③" },
-      ],
-    },
-    し: {
-      marks: [{ x: 200, y: 202, label: "①" }],
-    },
-    す: {
-      marks: [
-        { x: 142, y: 90, label: "①" },
-        { x: 218, y: 206, label: "②" },
-      ],
-    },
-    た: {
-      marks: [
-        { x: 96, y: 110, label: "①" },
-        { x: 140, y: 148, label: "②" },
-        { x: 214, y: 190, label: "③" },
-      ],
-    },
-    ち: {
-      marks: [
-        { x: 142, y: 90, label: "①" },
-        { x: 112, y: 142, label: "②" },
-        { x: 208, y: 204, label: "③" },
-      ],
-    },
-    つ: {
-      marks: [{ x: 202, y: 184, label: "①" }],
-    },
-    て: {
-      marks: [
-        { x: 142, y: 92, label: "①" },
-        { x: 206, y: 196, label: "②" },
-      ],
-    },
-    の: {
-      marks: [{ x: 198, y: 186, label: "①" }],
-    },
-
-    ア: {
-      marks: [
-        { x: 142, y: 94, label: "①" },
-        { x: 206, y: 194, label: "②" },
-      ],
-    },
-    イ: {
-      marks: [
-        { x: 96, y: 112, label: "①" },
-        { x: 208, y: 196, label: "②" },
-      ],
-    },
-    ウ: {
-      marks: [
-        { x: 142, y: 82, label: "①" },
-        { x: 206, y: 196, label: "②" },
-      ],
-    },
-    エ: {
-      marks: [
-        { x: 142, y: 90, label: "①" },
-        { x: 100, y: 146, label: "②" },
-        { x: 196, y: 214, label: "③" },
-      ],
-    },
-    オ: {
-      marks: [
-        { x: 142, y: 90, label: "①" },
-        { x: 100, y: 146, label: "②" },
-        { x: 220, y: 104, label: "③" },
-        { x: 214, y: 214, label: "④" },
-      ],
-    },
-    カ: {
-      marks: [
-        { x: 146, y: 96, label: "①" },
-        { x: 206, y: 194, label: "②" },
-      ],
-    },
-    キ: {
-      marks: [
-        { x: 142, y: 90, label: "①" },
-        { x: 136, y: 136, label: "②" },
-        { x: 206, y: 214, label: "③" },
-      ],
-    },
-    ク: {
-      marks: [{ x: 206, y: 178, label: "①" }],
-    },
-    コ: {
-      marks: [
-        { x: 96, y: 106, label: "①" },
-        { x: 220, y: 106, label: "②" },
-        { x: 218, y: 214, label: "③" },
-      ],
-    },
-    シ: {
-      marks: [
-        { x: 110, y: 94, label: "①" },
-        { x: 132, y: 126, label: "②" },
-        { x: 206, y: 200, label: "③" },
-      ],
-    },
-    ス: {
-      marks: [
-        { x: 142, y: 92, label: "①" },
-        { x: 206, y: 196, label: "②" },
-      ],
-    },
-    ツ: {
-      marks: [
-        { x: 108, y: 92, label: "①" },
-        { x: 136, y: 118, label: "②" },
-        { x: 166, y: 146, label: "③" },
-      ],
-    },
-    テ: {
-      marks: [
-        { x: 142, y: 92, label: "①" },
-        { x: 206, y: 196, label: "②" },
-      ],
-    },
-    ノ: {
-      marks: [{ x: 202, y: 180, label: "①" }],
-    },
-    ロ: {
-      marks: [
-        { x: 96, y: 106, label: "①" },
-        { x: 220, y: 106, label: "②" },
-        { x: 218, y: 214, label: "③" },
-      ],
-    },
-    ン: {
-      marks: [
-        { x: 128, y: 98, label: "①" },
-        { x: 206, y: 196, label: "②" },
-      ],
-    },
-  };
-
-  return guides[char] || null;
-}
-
-function scaleGuideValue(value: number, actual: number, base: number) {
-  return (value / base) * actual;
-}
-
 export default function WritePage() {
   const [mode, setMode] = useState<WriteMode>("basic");
   const [gridMode, setGridMode] = useState<GridMode>("four");
@@ -352,6 +132,7 @@ export default function WritePage() {
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const answerRef = useRef<HTMLDivElement | null>(null);
   const isDrawingRef = useRef(false);
 
   const filteredItems = useMemo(() => {
@@ -367,10 +148,6 @@ export default function WritePage() {
 
   const strokeHint = useMemo(() => {
     return currentItem ? getStrokeHint(currentItem) : "";
-  }, [currentItem]);
-
-  const strokeGuide = useMemo(() => {
-    return currentItem ? getStrokeGuide(currentItem.char) : null;
   }, [currentItem]);
 
   const drawSingleCell = (
@@ -461,7 +238,7 @@ export default function WritePage() {
     height: number,
     char: string
   ) => {
-    const fontSize = gridMode === "single" ? 180 : 150;
+    const fontSize = gridMode === "single" ? 270 : 225;
 
     ctx.save();
     ctx.globalAlpha = 0.12;
@@ -471,31 +248,6 @@ export default function WritePage() {
     ctx.font = `700 ${fontSize}px "Noto Sans JP", "Hiragino Sans", sans-serif`;
     ctx.fillText(char, width / 2, height / 2);
     ctx.restore();
-  };
-
-  const drawStrokeAnnotations = (
-    ctx: CanvasRenderingContext2D,
-    width: number,
-    height: number,
-    guide: StrokeGuide | null
-  ) => {
-    if (!guide) return;
-
-    const baseWidth = 300;
-    const baseHeight = gridMode === "single" ? 300 : 340;
-
-    guide.marks.forEach((mark) => {
-      const x = scaleGuideValue(mark.x, width, baseWidth);
-      const y = scaleGuideValue(mark.y, height, baseHeight);
-
-      ctx.save();
-      ctx.fillStyle = "rgba(51, 65, 85, 0.68)";
-      ctx.font = '600 14px "Noto Sans JP", "Noto Sans KR", sans-serif';
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText(mark.label, x, y);
-      ctx.restore();
-    });
   };
 
   const drawGuide = () => {
@@ -525,7 +277,6 @@ export default function WritePage() {
 
     if (showGhost) {
       drawGhostChar(ctx, width, height, currentItem.char);
-      drawStrokeAnnotations(ctx, width, height, strokeGuide);
     }
 
     ctx.strokeStyle = "#111827";
@@ -628,6 +379,12 @@ export default function WritePage() {
 
   const handleShowAnswer = () => {
     setShowAnswer(true);
+    window.setTimeout(() => {
+      answerRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 80);
   };
 
   const handleNext = () => {
@@ -698,7 +455,7 @@ export default function WritePage() {
           </h1>
 
           <p className="mt-3 text-[15px] leading-7 text-slate-600">
-            원고지 칸에 손가락이나 펜으로 직접 써보세요. 반투명 예시와 작은 획순 번호를
+            원고지 칸에 손가락이나 펜으로 직접 써보세요. 반투명 예시를
             참고하면서 천천히 따라 쓰면 훨씬 자연스럽게 익힐 수 있습니다.
           </p>
         </div>
@@ -878,13 +635,16 @@ export default function WritePage() {
 
             <div className="mt-3 rounded-2xl bg-slate-50 px-4 py-3 text-sm leading-6 text-slate-600 ring-1 ring-slate-200">
               {showGhost
-                ? "예시 ON 상태입니다. 원고지 안의 연한 글자와 작은 획순 번호를 참고해 따라 써보세요."
+                ? "예시 ON 상태입니다. 원고지 안의 연한 글자를 참고해 따라 써보세요."
                 : "예시 OFF 상태입니다. 빈 칸에 스스로 떠올려 쓰는 연습을 해보세요."}
             </div>
           </div>
 
           {showAnswer && (
-            <div className="mt-4 rounded-[26px] bg-white p-5 ring-1 ring-sky-100 shadow-[0_10px_28px_rgba(56,189,248,0.08)]">
+            <div
+              ref={answerRef}
+              className="mt-4 rounded-[26px] bg-white p-5 ring-1 ring-sky-100 shadow-[0_10px_28px_rgba(56,189,248,0.08)]"
+            >
               <div className="text-sm font-semibold text-sky-700">예시 확인</div>
 
               <div className="mt-3 flex items-center gap-4">
