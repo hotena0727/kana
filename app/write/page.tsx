@@ -20,13 +20,6 @@ type StudyItem = KanaItem & {
   script: "hiragana" | "katakana";
 };
 
-type GhostGlyph = {
-  char: string;
-  x: number;
-  y: number;
-  size: number;
-};
-
 const hiraganaList = (hiraganaData as KanaItem[]).map((item) => ({
   ...item,
   script: "hiragana" as const,
@@ -38,10 +31,6 @@ const katakanaList = (katakanaData as KanaItem[]).map((item) => ({
 }));
 
 const allKanaList: StudyItem[] = [...hiraganaList, ...katakanaList];
-
-function splitKanaString(char: string) {
-  return Array.from(char || "");
-}
 
 function filterWriteItems(items: StudyItem[], mode: WriteMode) {
   if (mode === "basic") {
@@ -85,36 +74,6 @@ function speakJapanese(text: string) {
   window.speechSynthesis.speak(utterance);
 }
 
-function getGhostGlyphs(text: string): GhostGlyph[] {
-  const chars = splitKanaString(text);
-
-  if (chars.length <= 1) {
-    return [
-      {
-        char: chars[0] || "",
-        x: 150,
-        y: 154,
-        size: 160,
-      },
-    ];
-  }
-
-  return [
-    {
-      char: chars[0],
-      x: 122,
-      y: 150,
-      size: 124,
-    },
-    {
-      char: chars[1],
-      x: 206,
-      y: 186,
-      size: 80,
-    },
-  ];
-}
-
 function scaleValue(value: number, actual: number, base: number) {
   return (value / base) * actual;
 }
@@ -141,7 +100,7 @@ export default function WritePage() {
     mode === "basic" ? "기본 문자" : mode === "combined" ? "요음" : "전체";
 
   const hint = useMemo(() => {
-    return currentItem ? getHint(currentItem) : "";
+    return currentItem ? getHint(currentItem.char, currentItem.script) : "";
   }, [currentItem]);
 
   useEffect(() => {
@@ -210,6 +169,28 @@ export default function WritePage() {
     });
   };
 
+  const drawStrokeMarks = (
+    ctx: CanvasRenderingContext2D,
+    width: number,
+    height: number,
+    guide: StrokeGuide | null
+  ) => {
+    if (!guide) return;
+
+    guide.marks.forEach((mark) => {
+      const x = scaleValue(mark.x, width, 300);
+      const y = scaleValue(mark.y, height, 300);
+
+      ctx.save();
+      ctx.fillStyle = "#2563eb";
+      ctx.font = `700 ${scaleValue(22, width, 300)}px "Noto Sans KR", sans-serif`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(mark.label, x, y);
+      ctx.restore();
+    });
+  };
+
   const drawGuide = () => {
     const canvas = canvasRef.current;
     if (!canvas || !currentItem) return;
@@ -233,6 +214,9 @@ export default function WritePage() {
     if (showGhost) {
       drawGhostChar(ctx, width, height, currentItem.char);
     }
+
+    const guide = getStrokeGuide(currentItem.char);
+    drawStrokeMarks(ctx, width, height, guide);
 
     ctx.strokeStyle = "#111827";
     ctx.lineWidth = 7;
@@ -319,7 +303,7 @@ export default function WritePage() {
     isDrawingRef.current = false;
     try {
       canvas.releasePointerCapture(event.pointerId);
-    } catch { }
+    } catch {}
   };
 
   const handleClearCanvas = () => {
