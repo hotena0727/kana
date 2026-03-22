@@ -4,18 +4,8 @@ export type StrokeMark = {
   label: string;
 };
 
-export type StrokeFlow = {
-  x1: number;
-  y1: number;
-  cx?: number;
-  cy?: number;
-  x2: number;
-  y2: number;
-};
-
 export type StrokeGuide = {
   marks: StrokeMark[];
-  flows: StrokeFlow[];
 };
 
 export type GhostGlyph = {
@@ -25,24 +15,6 @@ export type GhostGlyph = {
   size: number;
 };
 
-export const BASE_CANVAS_WIDTH = 300;
-export const BASE_CANVAS_HEIGHT = 300;
-
-const SMALL_KANA_MAP: Record<string, string> = {
-  ゃ: "や",
-  ゅ: "ゆ",
-  ょ: "よ",
-  ャ: "ヤ",
-  ュ: "ユ",
-  ョ: "ヨ",
-};
-
-const CIRCLED = ["①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⑩"];
-
-function toCircledNumber(n: number) {
-  return CIRCLED[n - 1] || String(n);
-}
-
 export function isCombinedKana(char: string) {
   return Array.from(char || "").length >= 2;
 }
@@ -51,25 +23,47 @@ export function splitKanaString(char: string) {
   return Array.from(char || "");
 }
 
-export function getStrokeHint(char: string, script: "hiragana" | "katakana") {
+export function getHint(char: string, script: "hiragana" | "katakana") {
   const hintMap: Record<string, string> = {
     あ: "짧은 시작 뒤 마지막 곡선을 크게 이어 보세요.",
     い: "왼쪽 짧은 획 뒤 오른쪽 긴 획을 또렷하게 써보세요.",
     う: "윗점과 아래 곡선의 위치 차이를 보며 써보세요.",
     え: "윗부분은 작게, 아래 곡선은 넓게 써보세요.",
     お: "왼쪽과 오른쪽 흐름을 나눠 보면 더 잘 보입니다.",
-    や: "왼쪽 시작 뒤 오른쪽 흐름을 여유 있게 이어 보세요.",
-    ゆ: "안쪽과 바깥쪽 흐름이 겹치지 않게 천천히 보세요.",
-    よ: "세 줄 간격이 너무 붙지 않게 써보세요.",
+    か: "왼쪽부터 안정적으로 쓰고, 오른쪽을 이어 보세요.",
+    き: "가로선 간격을 너무 붙이지 않게 써보세요.",
+    く: "짧게 시작해 부드럽게 꺾어 보세요.",
+    け: "왼쪽 짧은 획과 오른쪽 긴 획의 차이를 살려 보세요.",
+    こ: "두 가로선 간격을 일정하게 맞춰 보세요.",
+    さ: "윗부분과 아래 흐름을 분리해서 보세요.",
+    し: "위에서 아래로 한 흐름으로 내려와 보세요.",
+    す: "마지막 곡선을 급하게 끊지 말고 이어 보세요.",
+    せ: "가로와 세로가 만나는 위치를 확인해 보세요.",
+    そ: "윗부분과 아래 곡선을 나눠서 보면 쉽습니다.",
+    た: "왼쪽과 오른쪽 길이 차이를 살려 보세요.",
+    ち: "윗부분은 작게, 아래 곡선은 크게 써보세요.",
+    つ: "짧은 시작 뒤 긴 곡선을 한 번에 이어 보세요.",
+    て: "짧은 선 뒤 긴 흐름을 자연스럽게 이어 보세요.",
+    と: "점과 곡선을 너무 붙이지 말고 써보세요.",
+    の: "한 번에 둥글게 이어 쓴다는 느낌으로 써보세요.",
 
     ア: "짧은 윗획 뒤 아래 흐름을 곧게 잡아 보세요.",
     イ: "왼쪽 짧은 획과 오른쪽 긴 대각선의 차이를 살려 보세요.",
     ウ: "윗부분과 아래 큰 흐름을 분리해서 보세요.",
     エ: "세 가로선의 간격을 일정하게 두세요.",
     オ: "왼쪽 흐름과 오른쪽 흐름을 나눠서 보세요.",
-    ヤ: "왼쪽과 오른쪽 흐름의 길이 차이를 의식해 보세요.",
-    ユ: "틀을 먼저 떠올린 뒤 차분히 써보세요.",
-    ヨ: "세 칸 구조처럼 간격을 맞추면 더 또렷합니다.",
+    カ: "짧은 윗선 뒤 세로 흐름을 또렷하게 내려 보세요.",
+    キ: "가로선이 많으니 간격을 붙이지 않게 보세요.",
+    ク: "짧게 시작해 아래로 꺾이는 흐름을 이어 보세요.",
+    コ: "세로와 두 가로선이 안정적으로 보이게 하세요.",
+    シ: "세 점은 위에서 아래로, 오른쪽 획은 크게 보세요.",
+    ス: "윗부분은 짧게, 아래 곡선은 길게 이어 보세요.",
+    ツ: "세 점은 흐르듯, 아래 획은 길게 보세요.",
+    テ: "윗선과 아래 흐름을 따로 보세요.",
+    ト: "짧은 가로선 뒤 세로 흐름을 곧게 내려 보세요.",
+    ノ: "한 번에 툭 내려 긋는 느낌으로 써보세요.",
+    ロ: "네모 틀이 찌그러지지 않게 균형을 보세요.",
+    ン: "짧은 점 뒤 긴 흐름이 자연스럽게 이어지게 보세요.",
   };
 
   if (hintMap[char]) return hintMap[char];
@@ -79,11 +73,6 @@ export function getStrokeHint(char: string, script: "hiragana" | "katakana") {
     : "가타카나는 방향과 길이를 또렷하게 나눠서 써보세요.";
 }
 
-/**
- * 반투명 예시 글자 배치
- * - 1글자: 가운데
- * - 2글자(요음): 앞 글자 크게, 뒤 작은 글자 작게 오른쪽 아래
- */
 export function getGhostGlyphs(text: string): GhostGlyph[] {
   const chars = splitKanaString(text);
 
@@ -93,7 +82,7 @@ export function getGhostGlyphs(text: string): GhostGlyph[] {
         char: chars[0] || "",
         x: 150,
         y: 154,
-        size: 170,
+        size: 160,
       },
     ];
   }
@@ -101,266 +90,56 @@ export function getGhostGlyphs(text: string): GhostGlyph[] {
   return [
     {
       char: chars[0],
-      x: 126,
-      y: 148,
-      size: 132,
+      x: 122,
+      y: 150,
+      size: 124,
     },
     {
       char: chars[1],
       x: 206,
-      y: 184,
-      size: 88,
+      y: 186,
+      size: 80,
     },
   ];
 }
 
-function withOffset(
-  guide: StrokeGuide,
-  dx: number,
-  dy: number,
-  scale = 1,
-  startIndex = 0
-): StrokeGuide {
-  return {
-    marks: guide.marks.map((mark, index) => ({
-      x: mark.x * scale + dx,
-      y: mark.y * scale + dy,
-      label: toCircledNumber(startIndex + index + 1),
-    })),
-    flows: guide.flows.map((flow) => ({
-      x1: flow.x1 * scale + dx,
-      y1: flow.y1 * scale + dy,
-      cx: flow.cx !== undefined ? flow.cx * scale + dx : undefined,
-      cy: flow.cy !== undefined ? flow.cy * scale + dy : undefined,
-      x2: flow.x2 * scale + dx,
-      y2: flow.y2 * scale + dy,
-    })),
-  };
-}
-
-function mergeGuides(a: StrokeGuide, b: StrokeGuide): StrokeGuide {
-  return {
-    marks: [...a.marks, ...b.marks],
-    flows: [...a.flows, ...b.flows],
-  };
-}
-
-/**
- * 스타터 세트
- * - 지금은 아행 + やゆよ + 일부 가타카나
- * - 같은 형식으로 계속 확장 가능
- */
-const BASE_GUIDES: Record<string, StrokeGuide> = {
-  あ: {
-    marks: [
-      { x: 88, y: 94, label: "①" },
-      { x: 116, y: 136, label: "②" },
-      { x: 214, y: 226, label: "③" },
-    ],
-    flows: [
-      { x1: 98, y1: 102, x2: 110, y2: 116 },
-      { x1: 126, y1: 144, x2: 138, y2: 158 },
-      { x1: 196, y1: 206, cx: 206, cy: 212, x2: 214, y2: 218 },
-    ],
-  },
-  い: {
-    marks: [
-      { x: 106, y: 116, label: "①" },
-      { x: 206, y: 208, label: "②" },
-    ],
-    flows: [
-      { x1: 116, y1: 124, x2: 126, y2: 138 },
-      { x1: 192, y1: 192, x2: 200, y2: 202 },
-    ],
-  },
-  う: {
-    marks: [
-      { x: 140, y: 82, label: "①" },
-      { x: 206, y: 200, label: "②" },
-    ],
-    flows: [
-      { x1: 148, y1: 90, x2: 156, y2: 98 },
-      { x1: 190, y1: 184, cx: 198, cy: 192, x2: 206, y2: 196 },
-    ],
-  },
-  え: {
-    marks: [
-      { x: 132, y: 84, label: "①" },
-      { x: 102, y: 140, label: "②" },
-      { x: 206, y: 222, label: "③" },
-    ],
-    flows: [
-      { x1: 140, y1: 92, x2: 150, y2: 98 },
-      { x1: 112, y1: 148, x2: 122, y2: 156 },
-      { x1: 190, y1: 204, cx: 198, cy: 210, x2: 206, y2: 214 },
-    ],
-  },
-  お: {
-    marks: [
-      { x: 88, y: 98, label: "①" },
-      { x: 114, y: 140, label: "②" },
-      { x: 222, y: 104, label: "③" },
-      { x: 220, y: 224, label: "④" },
-    ],
-    flows: [
-      { x1: 100, y1: 106, x2: 112, y2: 120 },
-      { x1: 124, y1: 148, x2: 138, y2: 162 },
-      { x1: 208, y1: 116, x2: 198, y2: 126 },
-      { x1: 202, y1: 206, cx: 210, cy: 212, x2: 218, y2: 216 },
-    ],
-  },
-
-  や: {
-    marks: [
-      { x: 96, y: 110, label: "①" },
-      { x: 150, y: 102, label: "②" },
-      { x: 212, y: 192, label: "③" },
-    ],
-    flows: [
-      { x1: 108, y1: 118, x2: 118, y2: 132 },
-      { x1: 160, y1: 108, x2: 170, y2: 112 },
-      { x1: 194, y1: 176, cx: 204, cy: 182, x2: 212, y2: 188 },
-    ],
-  },
-  ゆ: {
-    marks: [
-      { x: 94, y: 112, label: "①" },
-      { x: 146, y: 148, label: "②" },
-      { x: 212, y: 194, label: "③" },
-    ],
-    flows: [
-      { x1: 106, y1: 120, x2: 116, y2: 134 },
-      { x1: 156, y1: 156, cx: 164, cy: 160, x2: 172, y2: 164 },
-      { x1: 194, y1: 178, cx: 204, cy: 184, x2: 212, y2: 190 },
-    ],
-  },
-  よ: {
-    marks: [
-      { x: 146, y: 92, label: "①" },
-      { x: 146, y: 146, label: "②" },
-      { x: 208, y: 214, label: "③" },
-    ],
-    flows: [
-      { x1: 156, y1: 98, x2: 166, y2: 100 },
-      { x1: 156, y1: 152, x2: 166, y2: 154 },
-      { x1: 192, y1: 204, x2: 184, y2: 202 },
-    ],
-  },
-
-  ア: {
-    marks: [
-      { x: 142, y: 92, label: "①" },
-      { x: 206, y: 194, label: "②" },
-    ],
-    flows: [
-      { x1: 152, y1: 98, x2: 162, y2: 100 },
-      { x1: 192, y1: 182, x2: 200, y2: 190 },
-    ],
-  },
-  イ: {
-    marks: [
-      { x: 96, y: 110, label: "①" },
-      { x: 206, y: 194, label: "②" },
-    ],
-    flows: [
-      { x1: 108, y1: 118, x2: 118, y2: 130 },
-      { x1: 192, y1: 182, x2: 200, y2: 190 },
-    ],
-  },
-  ウ: {
-    marks: [
-      { x: 142, y: 84, label: "①" },
-      { x: 206, y: 194, label: "②" },
-    ],
-    flows: [
-      { x1: 150, y1: 92, x2: 158, y2: 98 },
-      { x1: 192, y1: 182, x2: 200, y2: 190 },
-    ],
-  },
-  エ: {
-    marks: [
-      { x: 142, y: 88, label: "①" },
-      { x: 100, y: 144, label: "②" },
-      { x: 194, y: 212, label: "③" },
-    ],
-    flows: [
-      { x1: 152, y1: 94, x2: 162, y2: 96 },
-      { x1: 112, y1: 150, x2: 122, y2: 150 },
-      { x1: 180, y1: 206, x2: 190, y2: 206 },
-    ],
-  },
-  オ: {
-    marks: [
-      { x: 142, y: 88, label: "①" },
-      { x: 100, y: 144, label: "②" },
-      { x: 220, y: 102, label: "③" },
-      { x: 214, y: 212, label: "④" },
-    ],
-    flows: [
-      { x1: 152, y1: 94, x2: 162, y2: 96 },
-      { x1: 112, y1: 150, x2: 122, y2: 150 },
-      { x1: 206, y1: 114, x2: 196, y2: 122 },
-      { x1: 198, y1: 200, x2: 190, y2: 206 },
-    ],
-  },
-
-  ヤ: {
-    marks: [
-      { x: 96, y: 110, label: "①" },
-      { x: 150, y: 102, label: "②" },
-      { x: 212, y: 192, label: "③" },
-    ],
-    flows: [
-      { x1: 108, y1: 118, x2: 118, y2: 132 },
-      { x1: 160, y1: 108, x2: 170, y2: 112 },
-      { x1: 194, y1: 176, cx: 204, cy: 182, x2: 212, y2: 188 },
-    ],
-  },
-  ユ: {
-    marks: [
-      { x: 96, y: 110, label: "①" },
-      { x: 220, y: 110, label: "②" },
-      { x: 214, y: 214, label: "③" },
-    ],
-    flows: [
-      { x1: 108, y1: 114, x2: 118, y2: 114 },
-      { x1: 206, y1: 114, x2: 196, y2: 114 },
-      { x1: 198, y1: 202, x2: 190, y2: 208 },
-    ],
-  },
-  ヨ: {
-    marks: [
-      { x: 96, y: 110, label: "①" },
-      { x: 96, y: 156, label: "②" },
-      { x: 96, y: 208, label: "③" },
-    ],
-    flows: [
-      { x1: 108, y1: 114, x2: 118, y2: 114 },
-      { x1: 108, y1: 160, x2: 118, y2: 160 },
-      { x1: 108, y1: 212, x2: 118, y2: 212 },
-    ],
-  },
-};
-
 export function getStrokeGuide(text: string): StrokeGuide | null {
-  const chars = splitKanaString(text);
+  const guides: Record<string, StrokeGuide> = {
+    あ: {
+      marks: [
+        { x: 90, y: 96, label: "①" },
+        { x: 118, y: 138, label: "②" },
+        { x: 214, y: 222, label: "③" },
+      ],
+    },
+    い: {
+      marks: [
+        { x: 108, y: 118, label: "①" },
+        { x: 204, y: 206, label: "②" },
+      ],
+    },
+    う: {
+      marks: [
+        { x: 142, y: 84, label: "①" },
+        { x: 204, y: 198, label: "②" },
+      ],
+    },
+    え: {
+      marks: [
+        { x: 134, y: 86, label: "①" },
+        { x: 104, y: 140, label: "②" },
+        { x: 204, y: 220, label: "③" },
+      ],
+    },
+    お: {
+      marks: [
+        { x: 90, y: 100, label: "①" },
+        { x: 116, y: 140, label: "②" },
+        { x: 220, y: 106, label: "③" },
+        { x: 218, y: 220, label: "④" },
+      ],
+    },
+  };
 
-  if (chars.length <= 1) {
-    return BASE_GUIDES[chars[0]] || null;
-  }
-
-  const first = chars[0];
-  const second = chars[1];
-  const firstGuide = BASE_GUIDES[first];
-
-  const mappedSecond = SMALL_KANA_MAP[second] || second;
-  const secondBaseGuide = BASE_GUIDES[mappedSecond];
-
-  if (!firstGuide || !secondBaseGuide) return null;
-
-  const firstCount = firstGuide.marks.length;
-
-  const secondGuide = withOffset(secondBaseGuide, 138, 96, 0.56, firstCount);
-
-  return mergeGuides(withOffset(firstGuide, 0, 0, 1, 0), secondGuide);
+  return guides[text] || null;
 }
