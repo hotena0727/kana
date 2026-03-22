@@ -95,56 +95,55 @@ export function getGhostGlyphs(text: string): GhostGlyph[] {
   return [
     {
       char: chars[0],
-      x: 122,
-      y: 205, // 같은 baseline
+      x: 120,
+      y: 156,
       size: 118,
     },
     {
       char: chars[1],
-      x: 202,
-      y: 205, // 같은 baseline
-      size: 72,
+      x: 200,
+      y: 132,
+      size: 70,
     },
   ];
-}
 
-export function getStrokeGuide(text: string): StrokeGuide | null {
-  const guides: Record<string, StrokeGuide> = {
-    あ: {
-      marks: [
-        { x: 90, y: 96, label: "①" },
-        { x: 118, y: 138, label: "②" },
-        { x: 214, y: 222, label: "③" },
-      ],
-    },
-    い: {
-      marks: [
-        { x: 108, y: 118, label: "①" },
-        { x: 204, y: 206, label: "②" },
-      ],
-    },
-    う: {
-      marks: [
-        { x: 142, y: 84, label: "①" },
-        { x: 204, y: 198, label: "②" },
-      ],
-    },
-    え: {
-      marks: [
-        { x: 134, y: 86, label: "①" },
-        { x: 104, y: 140, label: "②" },
-        { x: 204, y: 220, label: "③" },
-      ],
-    },
-    お: {
-      marks: [
-        { x: 90, y: 100, label: "①" },
-        { x: 116, y: 140, label: "②" },
-        { x: 220, y: 106, label: "③" },
-        { x: 218, y: 220, label: "④" },
-      ],
-    },
-  };
+  export function getStrokeGuide(text: string): StrokeGuide | null {
+    const guides: Record<string, StrokeGuide> = {
+      あ: {
+        marks: [
+          { x: 90, y: 96, label: "①" },
+          { x: 118, y: 138, label: "②" },
+          { x: 214, y: 222, label: "③" },
+        ],
+      },
+      い: {
+        marks: [
+          { x: 108, y: 118, label: "①" },
+          { x: 204, y: 206, label: "②" },
+        ],
+      },
+      う: {
+        marks: [
+          { x: 142, y: 84, label: "①" },
+          { x: 204, y: 198, label: "②" },
+        ],
+      },
+      え: {
+        marks: [
+          { x: 134, y: 86, label: "①" },
+          { x: 104, y: 140, label: "②" },
+          { x: 204, y: 220, label: "③" },
+        ],
+      },
+      お: {
+        marks: [
+          { x: 90, y: 100, label: "①" },
+          { x: 116, y: 140, label: "②" },
+          { x: 220, y: 106, label: "③" },
+          { x: 218, y: 220, label: "④" },
+        ],
+      },
+    };
 
-  return guides[text] || null;
-}
+    return guides[text] || null;
+  }
