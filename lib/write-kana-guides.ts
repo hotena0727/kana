@@ -45,82 +45,6 @@ export function getHint(char: string, script: "hiragana" | "katakana") {
     : "가타카나는 방향과 길이를 또렷하게 나눠서 써보세요.";
 }
 
-function getSmallKanaOffset(char: string) {
-  switch (char) {
-    case "ゃ":
-    case "ャ":
-      return {
-        x: 210,
-        y: 202,
-        size: 94,
-      };
-    case "ゅ":
-    case "ュ":
-      return {
-        x: 210,
-        y: 204,
-        size: 92,
-      };
-    case "ょ":
-    case "ョ":
-      return {
-        x: 210,
-        y: 200,
-        size: 92,
-      };
-    default:
-      return {
-        x: 210,
-        y: 202,
-        size: 92,
-      };
-  }
-}
-
-function getBaseKanaOffset(char: string) {
-  const tallChars = new Set([
-    "り",
-    "リ",
-    "し",
-    "シ",
-    "ち",
-    "チ",
-    "ひ",
-    "ヒ",
-  ]);
-
-  const wideChars = new Set([
-    "み",
-    "ミ",
-    "き",
-    "キ",
-    "に",
-    "ニ",
-  ]);
-
-  if (tallChars.has(char)) {
-    return {
-      x: 116,
-      y: 214,
-      size: 140,
-    };
-  }
-
-  if (wideChars.has(char)) {
-    return {
-      x: 112,
-      y: 214,
-      size: 144,
-    };
-  }
-
-  return {
-    x: 114,
-    y: 214,
-    size: 142,
-  };
-}
-
 export function getGhostGlyphs(text: string): GhostGlyph[] {
   const chars = splitKanaString(text);
 
@@ -135,21 +59,18 @@ export function getGhostGlyphs(text: string): GhostGlyph[] {
     ];
   }
 
-  const base = getBaseKanaOffset(chars[0]);
-  const small = getSmallKanaOffset(chars[1]);
-
   return [
     {
       char: chars[0],
-      x: base.x,
-      y: base.y,
-      size: base.size,
+      x: 118,
+      y: 214,
+      size: 138,
     },
     {
       char: chars[1],
-      x: small.x,
-      y: small.y,
-      size: small.size,
+      x: 212,
+      y: 198,
+      size: 96,
     },
   ];
 }
