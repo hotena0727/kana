@@ -8,7 +8,6 @@ import katakanaData from "@/data/katakana.json";
 import type { KanaItem } from "@/lib/types";
 
 type WriteMode = "basic" | "combined" | "all";
-type GridMode = "single" | "four";
 
 type StudyItem = KanaItem & {
   script: "hiragana" | "katakana";
@@ -124,8 +123,6 @@ function getStrokeHint(item: StudyItem) {
 
 export default function WritePage() {
   const [mode, setMode] = useState<WriteMode>("basic");
-  const [gridMode, setGridMode] = useState<GridMode>("four");
-  const [showGhost, setShowGhost] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
   const [roundCount, setRoundCount] = useState(1);
@@ -144,11 +141,15 @@ export default function WritePage() {
   const modeLabel =
     mode === "basic" ? "기본 문자" : mode === "combined" ? "요음" : "전체";
 
-  const gridLabel = gridMode === "single" ? "1칸" : "4칸";
-
   const strokeHint = useMemo(() => {
     return currentItem ? getStrokeHint(currentItem) : "";
   }, [currentItem]);
+
+  useEffect(() => {
+    setCurrentIndex(0);
+    setShowAnswer(false);
+    setRoundCount(1);
+  }, [mode]);
 
   const drawSingleCell = (
     ctx: CanvasRenderingContext2D,
@@ -186,59 +187,13 @@ export default function WritePage() {
     ctx.stroke();
   };
 
-  const drawFourCells = (
-    ctx: CanvasRenderingContext2D,
-    width: number,
-    height: number
-  ) => {
-    const padding = 16;
-    const gap = 10;
-    const cellSize = Math.min((width - padding * 2 - gap) / 2, 140);
-    const totalWidth = cellSize * 2 + gap;
-    const totalHeight = cellSize * 2 + gap;
-    const startX = (width - totalWidth) / 2;
-    const startY = (height - totalHeight) / 2;
-
-    for (let row = 0; row < 2; row++) {
-      for (let col = 0; col < 2; col++) {
-        const x = startX + col * (cellSize + gap);
-        const y = startY + row * (cellSize + gap);
-
-        ctx.setLineDash([]);
-        ctx.strokeRect(x, y, cellSize, cellSize);
-
-        ctx.beginPath();
-        ctx.moveTo(x + cellSize / 2, y);
-        ctx.lineTo(x + cellSize / 2, y + cellSize);
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.moveTo(x, y + cellSize / 2);
-        ctx.lineTo(x + cellSize, y + cellSize / 2);
-        ctx.stroke();
-
-        ctx.setLineDash([4, 4]);
-
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(x + cellSize, y + cellSize);
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.moveTo(x + cellSize, y);
-        ctx.lineTo(x, y + cellSize);
-        ctx.stroke();
-      }
-    }
-  };
-
   const drawGhostChar = (
     ctx: CanvasRenderingContext2D,
     width: number,
     height: number,
     char: string
   ) => {
-    const fontSize = gridMode === "single" ? 270 : 225;
+    const fontSize = char.length >= 2 ? 180 : 270;
 
     ctx.save();
     ctx.globalAlpha = 0.12;
@@ -267,17 +222,10 @@ export default function WritePage() {
     ctx.strokeStyle = "#cfe3ff";
     ctx.lineWidth = 1;
 
-    if (gridMode === "single") {
-      drawSingleCell(ctx, width, height);
-    } else {
-      drawFourCells(ctx, width, height);
-    }
+    drawSingleCell(ctx, width, height);
 
     ctx.setLineDash([]);
-
-    if (showGhost) {
-      drawGhostChar(ctx, width, height, currentItem.char);
-    }
+    drawGhostChar(ctx, width, height, currentItem.char);
 
     ctx.strokeStyle = "#111827";
     ctx.lineWidth = 7;
@@ -293,7 +241,7 @@ export default function WritePage() {
     const rect = wrapper.getBoundingClientRect();
     const ratio = window.devicePixelRatio || 1;
     const cssWidth = rect.width;
-    const cssHeight = gridMode === "single" ? 300 : 340;
+    const cssHeight = 300;
 
     canvas.width = Math.floor(cssWidth * ratio);
     canvas.height = Math.floor(cssHeight * ratio);
@@ -306,12 +254,6 @@ export default function WritePage() {
     ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
     drawGuide();
   };
-
-  useEffect(() => {
-    setCurrentIndex(0);
-    setShowAnswer(false);
-    setRoundCount(1);
-  }, [mode]);
 
   useEffect(() => {
     resizeCanvas();
@@ -327,7 +269,7 @@ export default function WritePage() {
 
   useEffect(() => {
     resizeCanvas();
-  }, [currentIndex, mode, gridMode, showGhost, currentItem?.char]);
+  }, [currentIndex, mode, currentItem?.char]);
 
   const getPoint = (event: React.PointerEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
@@ -490,34 +432,6 @@ export default function WritePage() {
               );
             })}
           </div>
-
-          <div className="mt-4 grid grid-cols-2 gap-3">
-            <button
-              type="button"
-              onClick={() => setGridMode("single")}
-              className={[
-                "rounded-2xl px-4 py-3 text-sm font-semibold ring-1 transition",
-                gridMode === "single"
-                  ? "bg-sky-500 text-white ring-sky-500"
-                  : "bg-white text-slate-700 ring-slate-200 hover:bg-slate-50",
-              ].join(" ")}
-            >
-              1칸
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setGridMode("four")}
-              className={[
-                "rounded-2xl px-4 py-3 text-sm font-semibold ring-1 transition",
-                gridMode === "four"
-                  ? "bg-sky-500 text-white ring-sky-500"
-                  : "bg-white text-slate-700 ring-slate-200 hover:bg-slate-50",
-              ].join(" ")}
-            >
-              4칸
-            </button>
-          </div>
         </div>
 
         <div className="rounded-[30px] bg-white p-5 shadow-[0_16px_40px_rgba(15,23,42,0.08)] ring-1 ring-slate-100">
@@ -535,7 +449,7 @@ export default function WritePage() {
               </div>
 
               <div className="inline-flex rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-500 ring-1 ring-slate-200">
-                {currentItem.row || "문자"} · {gridLabel}
+                {currentItem.row || "문자"} · 1칸
               </div>
             </div>
 
@@ -562,15 +476,6 @@ export default function WritePage() {
               )}
             </div>
 
-            <div className="mt-5 rounded-2xl bg-white px-4 py-3 ring-1 ring-sky-100">
-              <div className="text-xs font-semibold tracking-wide text-sky-700">
-                짧은 힌트
-              </div>
-              <div className="mt-2 text-sm leading-6 text-slate-600">
-                {strokeHint}
-              </div>
-            </div>
-
             <div className="mt-5 grid grid-cols-2 gap-3">
               <button
                 type="button"
@@ -594,28 +499,13 @@ export default function WritePage() {
             <div className="flex items-center justify-between gap-2">
               <div className="text-sm font-semibold text-sky-700">손글씨 연습칸</div>
 
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setShowGhost((prev) => !prev)}
-                  className={[
-                    "rounded-full px-3 py-1.5 text-xs font-semibold transition",
-                    showGhost
-                      ? "bg-sky-500 text-white"
-                      : "bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50",
-                  ].join(" ")}
-                >
-                  예시 {showGhost ? "ON" : "OFF"}
-                </button>
-
-                <button
-                  type="button"
-                  onClick={handleClearCanvas}
-                  className="rounded-full bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-600 ring-1 ring-slate-200 transition hover:bg-slate-100"
-                >
-                  지우기
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={handleClearCanvas}
+                className="rounded-full bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-600 ring-1 ring-slate-200 transition hover:bg-slate-100"
+              >
+                지우기
+              </button>
             </div>
 
             <div
@@ -634,9 +524,7 @@ export default function WritePage() {
             </div>
 
             <div className="mt-3 rounded-2xl bg-slate-50 px-4 py-3 text-sm leading-6 text-slate-600 ring-1 ring-slate-200">
-              {showGhost
-                ? "예시 ON 상태입니다. 원고지 안의 연한 글자를 참고해 따라 써보세요."
-                : "예시 OFF 상태입니다. 빈 칸에 스스로 떠올려 쓰는 연습을 해보세요."}
+              {strokeHint}
             </div>
           </div>
 
