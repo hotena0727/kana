@@ -45,38 +45,6 @@ export function getHint(char: string, script: "hiragana" | "katakana") {
     : "가타카나는 방향과 길이를 또렷하게 나눠서 써보세요.";
 }
 
-function getSmallKanaOffset(char: string) {
-  switch (char) {
-    case "ゃ":
-    case "ャ":
-      return {
-        x: 210,
-        y: 202,
-        size: 94,
-      };
-    case "ゅ":
-    case "ュ":
-      return {
-        x: 210,
-        y: 204,
-        size: 92,
-      };
-    case "ょ":
-    case "ョ":
-      return {
-        x: 210,
-        y: 200,
-        size: 92,
-      };
-    default:
-      return {
-        x: 210,
-        y: 202,
-        size: 92,
-      };
-  }
-}
-
 function getBaseKanaOffset(char: string) {
   const tallChars = new Set([
     "り",
@@ -87,6 +55,9 @@ function getBaseKanaOffset(char: string) {
     "チ",
     "ひ",
     "ヒ",
+    "い",
+    "イ",
+    "レ",
   ]);
 
   const wideChars = new Set([
@@ -96,7 +67,50 @@ function getBaseKanaOffset(char: string) {
     "キ",
     "に",
     "ニ",
+    "ま",
+    "マ",
+    "や",
+    "ヤ",
+    "ゆ",
+    "ユ",
+    "よ",
+    "ヨ",
   ]);
+
+  const roundChars = new Set([
+    "く",
+    "ぐ",
+    "ク",
+    "グ",
+    "つ",
+    "づ",
+    "ツ",
+    "ヅ",
+    "る",
+    "ル",
+    "ろ",
+    "ロ",
+  ]);
+
+  const voicedWideChars = new Set([
+    "ぎ",
+    "ジ",
+    "じ",
+    "ぢ",
+    "ビ",
+    "び",
+    "ピ",
+    "ぴ",
+    "ギ",
+  ]);
+
+  if (voicedWideChars.has(char)) {
+    return {
+      x: 110,
+      y: 214,
+      size: 146,
+    };
+  }
 
   if (tallChars.has(char)) {
     return {
@@ -114,11 +128,66 @@ function getBaseKanaOffset(char: string) {
     };
   }
 
+  if (roundChars.has(char)) {
+    return {
+      x: 115,
+      y: 214,
+      size: 142,
+    };
+  }
+
   return {
     x: 114,
     y: 214,
     size: 142,
   };
+}
+
+function getSmallKanaOffset(char: string, baseChar?: string) {
+  const voicedBase = new Set([
+    "ぎ",
+    "じ",
+    "ぢ",
+    "び",
+    "ぴ",
+    "ギ",
+    "ジ",
+    "ヂ",
+    "ビ",
+    "ピ",
+  ]);
+
+  const adjustX = voicedBase.has(baseChar || "") ? 214 : 210;
+
+  switch (char) {
+    case "ゃ":
+    case "ャ":
+      return {
+        x: adjustX,
+        y: 202,
+        size: 94,
+      };
+    case "ゅ":
+    case "ュ":
+      return {
+        x: adjustX,
+        y: 205,
+        size: 92,
+      };
+    case "ょ":
+    case "ョ":
+      return {
+        x: adjustX,
+        y: 200,
+        size: 92,
+      };
+    default:
+      return {
+        x: adjustX,
+        y: 202,
+        size: 92,
+      };
+  }
 }
 
 export function getGhostGlyphs(text: string): GhostGlyph[] {
@@ -136,7 +205,7 @@ export function getGhostGlyphs(text: string): GhostGlyph[] {
   }
 
   const base = getBaseKanaOffset(chars[0]);
-  const small = getSmallKanaOffset(chars[1]);
+  const small = getSmallKanaOffset(chars[1], chars[0]);
 
   return [
     {
