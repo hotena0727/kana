@@ -129,24 +129,27 @@ export function getGhostGlyphs(text: string): GhostGlyph[] {
       {
         char: chars[0] || "",
         x: 150,
-        y: 214, // baseline
+        y: 214,
         size: 148,
       },
     ];
   }
 
+  const base = getBaseKanaOffset(chars[0]);
+  const small = getSmallKanaOffset(chars[1]);
+
   return [
     {
       char: chars[0],
-      x: 118,
-      y: 214, // 큰 글자 기준선
-      size: 138,
+      x: base.x,
+      y: base.y,
+      size: base.size,
     },
     {
       char: chars[1],
-      x: 212,
-      y: 198, // 작은 글자는 같은 하단선보다 살짝 위
-      size: 96,
+      x: small.x,
+      y: small.y,
+      size: small.size,
     },
   ];
 }
