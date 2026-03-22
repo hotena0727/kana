@@ -6,20 +6,18 @@ import BottomNav from "@/components/BottomNav";
 import hiraganaData from "@/data/hiragana.json";
 import katakanaData from "@/data/katakana.json";
 import type { KanaItem } from "@/lib/types";
-import {
-  BASE_CANVAS_HEIGHT,
-  BASE_CANVAS_WIDTH,
-  getGhostGlyphs,
-  getStrokeGuide,
-  getStrokeHint,
-  isCombinedKana,
-  type StrokeGuide,
-} from "@/lib/write-kana-guides";
 
 type WriteMode = "basic" | "combined" | "all";
 
 type StudyItem = KanaItem & {
   script: "hiragana" | "katakana";
+};
+
+type GhostGlyph = {
+  char: string;
+  x: number;
+  y: number;
+  size: number;
 };
 
 const hiraganaList = (hiraganaData as KanaItem[]).map((item) => ({
@@ -33,6 +31,14 @@ const katakanaList = (katakanaData as KanaItem[]).map((item) => ({
 }));
 
 const allKanaList: StudyItem[] = [...hiraganaList, ...katakanaList];
+
+function isCombinedKana(char: string) {
+  return Array.from(char || "").length >= 2;
+}
+
+function splitKanaString(char: string) {
+  return Array.from(char || "");
+}
 
 function filterWriteItems(items: StudyItem[], mode: WriteMode) {
   if (mode === "basic") {
@@ -76,6 +82,87 @@ function speakJapanese(text: string) {
   window.speechSynthesis.speak(utterance);
 }
 
+function getStrokeHint(item: StudyItem) {
+  const hintMap: Record<string, string> = {
+    あ: "짧은 시작 뒤 마지막 곡선을 크게 이어 보세요.",
+    い: "왼쪽 짧은 획 뒤 오른쪽 긴 획을 또렷하게 써보세요.",
+    う: "윗점과 아래 곡선의 위치 차이를 보며 써보세요.",
+    え: "윗부분은 작게, 아래 곡선은 넓게 써보세요.",
+    お: "왼쪽과 오른쪽 흐름을 나눠 보면 더 잘 보입니다.",
+    か: "왼쪽부터 안정적으로 쓰고, 오른쪽을 이어 보세요.",
+    き: "가로선 간격을 너무 붙이지 않게 써보세요.",
+    く: "짧게 시작해 부드럽게 꺾어 보세요.",
+    け: "왼쪽 짧은 획과 오른쪽 긴 획의 차이를 살려 보세요.",
+    こ: "두 가로선 간격을 일정하게 맞춰 보세요.",
+    さ: "윗부분과 아래 흐름을 분리해서 보세요.",
+    し: "위에서 아래로 한 흐름으로 내려와 보세요.",
+    す: "마지막 곡선을 급하게 끊지 말고 이어 보세요.",
+    せ: "가로와 세로가 만나는 위치를 확인해 보세요.",
+    そ: "윗부분과 아래 곡선을 나눠서 보면 쉽습니다.",
+    た: "왼쪽과 오른쪽 길이 차이를 살려 보세요.",
+    ち: "윗부분은 작게, 아래 곡선은 크게 써보세요.",
+    つ: "짧은 시작 뒤 긴 곡선을 한 번에 이어 보세요.",
+    て: "짧은 선 뒤 긴 흐름을 자연스럽게 이어 보세요.",
+    と: "점과 곡선을 너무 붙이지 말고 써보세요.",
+    の: "한 번에 둥글게 이어 쓴다는 느낌으로 써보세요.",
+
+    ア: "짧은 윗획 뒤 아래 흐름을 곧게 잡아 보세요.",
+    イ: "왼쪽 짧은 획과 오른쪽 긴 대각선의 차이를 살려 보세요.",
+    ウ: "윗부분과 아래 큰 흐름을 분리해서 보세요.",
+    エ: "세 가로선의 간격을 일정하게 두세요.",
+    オ: "왼쪽 흐름과 오른쪽 흐름을 나눠서 보세요.",
+    カ: "짧은 윗선 뒤 세로 흐름을 또렷하게 내려 보세요.",
+    キ: "가로선이 많으니 간격을 붙이지 않게 보세요.",
+    ク: "짧게 시작해 아래로 꺾이는 흐름을 이어 보세요.",
+    コ: "세로와 두 가로선이 안정적으로 보이게 하세요.",
+    シ: "세 점은 위에서 아래로, 오른쪽 획은 크게 보세요.",
+    ス: "윗부분은 짧게, 아래 곡선은 길게 이어 보세요.",
+    ツ: "세 점은 흐르듯, 아래 획은 길게 보세요.",
+    テ: "윗선과 아래 흐름을 따로 보세요.",
+    ト: "짧은 가로선 뒤 세로 흐름을 곧게 내려 보세요.",
+    ノ: "한 번에 툭 내려 긋는 느낌으로 써보세요.",
+    ロ: "네모 틀이 찌그러지지 않게 균형을 보세요.",
+    ン: "짧은 점 뒤 긴 흐름이 자연스럽게 이어지게 보세요.",
+  };
+
+  if (hintMap[item.char]) return hintMap[item.char];
+
+  return item.script === "hiragana"
+    ? "히라가나는 곡선 흐름을 의식하며 천천히 이어 써보세요."
+    : "가타카나는 방향과 길이를 또렷하게 나눠서 써보세요.";
+}
+
+function getGhostGlyphs(text: string): GhostGlyph[] {
+  const chars = splitKanaString(text);
+
+  if (chars.length <= 1) {
+    return [
+      {
+        char: chars[0] || "",
+        x: 150,
+        y: 154,
+        size: 160,
+      },
+    ];
+  }
+
+  // 요음/2글자 조합
+  return [
+    {
+      char: chars[0],
+      x: 122,
+      y: 150,
+      size: 124,
+    },
+    {
+      char: chars[1],
+      x: 206,
+      y: 186,
+      size: 80,
+    },
+  ];
+}
+
 function scaleValue(value: number, actual: number, base: number) {
   return (value / base) * actual;
 }
@@ -85,6 +172,7 @@ export default function WritePage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
   const [roundCount, setRoundCount] = useState(1);
+  const [showGhost, setShowGhost] = useState(true);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -101,11 +189,7 @@ export default function WritePage() {
     mode === "basic" ? "기본 문자" : mode === "combined" ? "요음" : "전체";
 
   const strokeHint = useMemo(() => {
-    return currentItem ? getStrokeHint(currentItem.char, currentItem.script) : "";
-  }, [currentItem]);
-
-  const strokeGuide = useMemo<StrokeGuide | null>(() => {
-    return currentItem ? getStrokeGuide(currentItem.char) : null;
+    return currentItem ? getStrokeHint(currentItem) : "";
   }, [currentItem]);
 
   useEffect(() => {
@@ -159,9 +243,9 @@ export default function WritePage() {
     const glyphs = getGhostGlyphs(text);
 
     glyphs.forEach((glyph) => {
-      const x = scaleValue(glyph.x, width, BASE_CANVAS_WIDTH);
-      const y = scaleValue(glyph.y, height, BASE_CANVAS_HEIGHT);
-      const size = scaleValue(glyph.size, width, BASE_CANVAS_WIDTH);
+      const x = scaleValue(glyph.x, width, 300);
+      const y = scaleValue(glyph.y, height, 300);
+      const size = scaleValue(glyph.size, width, 300);
 
       ctx.save();
       ctx.globalAlpha = 0.12;
@@ -170,80 +254,6 @@ export default function WritePage() {
       ctx.textBaseline = "middle";
       ctx.font = `700 ${size}px "Noto Sans JP", "Hiragino Sans", sans-serif`;
       ctx.fillText(glyph.char, x, y);
-      ctx.restore();
-    });
-  };
-
-  const drawStrokeAnnotations = (
-    ctx: CanvasRenderingContext2D,
-    width: number,
-    height: number,
-    guide: StrokeGuide | null
-  ) => {
-    if (!guide) return;
-
-    guide.flows.forEach((flow) => {
-      const x1 = scaleValue(flow.x1, width, BASE_CANVAS_WIDTH);
-      const y1 = scaleValue(flow.y1, height, BASE_CANVAS_HEIGHT);
-      const x2 = scaleValue(flow.x2, width, BASE_CANVAS_WIDTH);
-      const y2 = scaleValue(flow.y2, height, BASE_CANVAS_HEIGHT);
-      const cx =
-        flow.cx !== undefined
-          ? scaleValue(flow.cx, width, BASE_CANVAS_WIDTH)
-          : undefined;
-      const cy =
-        flow.cy !== undefined
-          ? scaleValue(flow.cy, height, BASE_CANVAS_HEIGHT)
-          : undefined;
-
-      ctx.save();
-      ctx.strokeStyle = "rgba(14, 165, 233, 0.42)";
-      ctx.fillStyle = "rgba(14, 165, 233, 0.42)";
-      ctx.lineWidth = 1.1;
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
-
-      ctx.beginPath();
-      ctx.moveTo(x1, y1);
-      if (cx !== undefined && cy !== undefined) {
-        ctx.quadraticCurveTo(cx, cy, x2, y2);
-      } else {
-        ctx.lineTo(x2, y2);
-      }
-      ctx.stroke();
-
-      const angle =
-        cx !== undefined && cy !== undefined
-          ? Math.atan2(y2 - cy, x2 - cx)
-          : Math.atan2(y2 - y1, x2 - x1);
-
-      const head = 4.2;
-      ctx.beginPath();
-      ctx.moveTo(x2, y2);
-      ctx.lineTo(
-        x2 - head * Math.cos(angle - Math.PI / 7),
-        y2 - head * Math.sin(angle - Math.PI / 7)
-      );
-      ctx.lineTo(
-        x2 - head * Math.cos(angle + Math.PI / 7),
-        y2 - head * Math.sin(angle + Math.PI / 7)
-      );
-      ctx.closePath();
-      ctx.fill();
-
-      ctx.restore();
-    });
-
-    guide.marks.forEach((mark) => {
-      const x = scaleValue(mark.x, width, BASE_CANVAS_WIDTH);
-      const y = scaleValue(mark.y, height, BASE_CANVAS_HEIGHT);
-
-      ctx.save();
-      ctx.fillStyle = "rgba(51, 65, 85, 0.72)";
-      ctx.font = '600 13px "Noto Sans JP", "Noto Sans KR", sans-serif';
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText(mark.label, x, y);
       ctx.restore();
     });
   };
@@ -268,8 +278,9 @@ export default function WritePage() {
     drawSingleCell(ctx, width, height);
     ctx.setLineDash([]);
 
-    drawGhostChar(ctx, width, height, currentItem.char);
-    drawStrokeAnnotations(ctx, width, height, strokeGuide);
+    if (showGhost) {
+      drawGhostChar(ctx, width, height, currentItem.char);
+    }
 
     ctx.strokeStyle = "#111827";
     ctx.lineWidth = 7;
@@ -313,7 +324,7 @@ export default function WritePage() {
 
   useEffect(() => {
     resizeCanvas();
-  }, [currentIndex, mode, currentItem?.char, strokeGuide]);
+  }, [currentIndex, mode, showGhost, currentItem?.char]);
 
   const getPoint = (event: React.PointerEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
@@ -441,8 +452,8 @@ export default function WritePage() {
           </h1>
 
           <p className="mt-3 text-[15px] leading-7 text-slate-600">
-            원고지 칸에 손가락이나 펜으로 직접 써보세요. 반투명 예시와 작은 획순 가이드를
-            참고하면서 천천히 따라 쓰면 훨씬 자연스럽게 익힐 수 있습니다.
+            원고지 칸에 손가락이나 펜으로 직접 써보세요. 예시를 참고하면서
+            천천히 따라 쓰면 훨씬 자연스럽게 익힐 수 있습니다.
           </p>
         </div>
 
@@ -543,13 +554,28 @@ export default function WritePage() {
             <div className="flex items-center justify-between gap-2">
               <div className="text-sm font-semibold text-sky-700">손글씨 연습칸</div>
 
-              <button
-                type="button"
-                onClick={handleClearCanvas}
-                className="rounded-full bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-600 ring-1 ring-slate-200 transition hover:bg-slate-100"
-              >
-                지우기
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowGhost((prev) => !prev)}
+                  className={[
+                    "rounded-full px-3 py-1.5 text-xs font-semibold transition",
+                    showGhost
+                      ? "bg-sky-500 text-white"
+                      : "bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50",
+                  ].join(" ")}
+                >
+                  예시 {showGhost ? "ON" : "OFF"}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleClearCanvas}
+                  className="rounded-full bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-600 ring-1 ring-slate-200 transition hover:bg-slate-100"
+                >
+                  지우기
+                </button>
+              </div>
             </div>
 
             <div
